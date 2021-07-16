@@ -1,0 +1,5 @@
+C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Debug (predeterminado)/CMakeFiles/edit_cache.dir
+C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Debug (predeterminado)/CMakeFiles/rebuild_cache.dir
+C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Debug (predeterminado)/PathTracer/CMakeFiles/PathTracer.dir
+C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Debug (predeterminado)/PathTracer/CMakeFiles/edit_cache.dir
+C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Debug (predeterminado)/PathTracer/CMakeFiles/rebuild_cache.dir
