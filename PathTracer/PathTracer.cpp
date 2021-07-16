@@ -58,6 +58,5 @@ int main(int argc, char* argv[])
         cout << "Total elapsed time: " << duration.count() << " ms" << endl;
         cout << "Output can be found at: " + USER_PATH << endl;
     }
-	
 	return 0;
 }
