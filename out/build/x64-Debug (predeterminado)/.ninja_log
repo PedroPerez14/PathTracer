@@ -1,0 +1,5 @@
+# ninja log v5
+0	313	648159210	PathTracer/CMakeFiles/PathTracer.dir/PathTracer.cpp.obj	a273f6874e95e271
+313	576	648159210	PathTracer/PathTracer.exe	e980388ed1c24686
+3	334	648160673	PathTracer/CMakeFiles/PathTracer.dir/Tracer/PathTracer.cpp.obj	343374316809f9dc
+2	37	648160755	PathTracer/CMakeFiles/PathTracer.dir/Tracer/PathTracer.cpp.obj	343374316809f9dc
