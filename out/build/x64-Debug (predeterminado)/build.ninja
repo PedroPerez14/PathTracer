@@ -71,7 +71,7 @@ build rebuild_cache: phony CMakeFiles\rebuild_cache.util
 
 build cmake_object_order_depends_target_PathTracer: phony || PathTracer\CMakeFiles\PathTracer.dir
 
-build PathTracer\CMakeFiles\PathTracer.dir\PathTracer.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\PathTracer.cpp || cmake_object_order_depends_target_PathTracer
+build PathTracer\CMakeFiles\PathTracer.dir\MainPathTracer.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\MainPathTracer.cpp || cmake_object_order_depends_target_PathTracer
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
   OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir
@@ -93,7 +93,7 @@ build PathTracer\CMakeFiles\PathTracer.dir\Tracer\PathTracer.cpp.obj: CXX_COMPIL
 #############################################
 # Link the executable PathTracer\PathTracer.exe
 
-build PathTracer\PathTracer.exe: CXX_EXECUTABLE_LINKER__PathTracer_Debug PathTracer\CMakeFiles\PathTracer.dir\PathTracer.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Tracer\PathTracer.cpp.obj
+build PathTracer\PathTracer.exe: CXX_EXECUTABLE_LINKER__PathTracer_Debug PathTracer\CMakeFiles\PathTracer.dir\MainPathTracer.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Tracer\PathTracer.cpp.obj
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

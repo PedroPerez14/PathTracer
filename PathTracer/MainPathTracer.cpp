@@ -4,7 +4,7 @@
  * Coms: Punto de entrada de la aplicación
  */
 
-#include "PathTracer.h"
+#include "MainPathTracer.h"
 
 using namespace std;
 
