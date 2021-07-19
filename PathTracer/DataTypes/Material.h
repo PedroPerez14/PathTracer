@@ -32,63 +32,63 @@ struct Material
     Color k_s = Color{ 0, 0, 0 };
     Color k_t = Color{ 0, 0, 0 };
     bool has_texture = false;
-    shared_ptr<Texture> tex;
+    std::shared_ptr<Texture> tex;
     float mul = 1.0f;       //in case you want to increase emitted light artificially, here's a multiplier to do so
 };
 
 //Emitting
-shared_ptr<Material> create_emitting_material(Color color)  //Non-textured
+std::shared_ptr<Material> create_emitting_material(Color color)  //Non-textured
 {
-    return make_shared<Material>(emitting, fresnel_coef[cristal_1], color, color, color, false, nullptr, 1.0f);
+    return std::make_shared<Material>(emitting, fresnel_coef[cristal_1], color, color, color, false, nullptr, 1.0f);
 }
 
-shared_ptr<Material> create_emitting_material(shared_ptr<Texture> tex, const float& multiplier = 1.0f)  //Textured
+std::shared_ptr<Material> create_emitting_material(std::shared_ptr<Texture> tex, const float& multiplier = 1.0f)  //Textured
 {
-    return make_shared<Material>(emitting, fresnel_coef[cristal_1], Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 0), true, text, multiplier);
+    return std::make_shared<Material>(emitting, fresnel_coef[cristal_1], Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, true, tex, multiplier);
 }
 
 //Diffuse
-shared_ptr<Material> create_diffuse_material(const Color& color)   //Non-textured
+std::shared_ptr<Material> create_diffuse_material(const Color& color)   //Non-textured
 {
-    return make_shared<Material>(diffuse, fresnel_coef[cristal_1], color, color, color, false, nullptr, 1.0f);
+    return std::make_shared<Material>(diffuse, fresnel_coef[cristal_1], color, color, color, false, nullptr, 1.0f);
 }
 
-shared_ptr<Material> create_diffuse_material(const shared_ptr<Textura> text)   //Textured
+std::shared_ptr<Material> create_diffuse_material(const std::shared_ptr<Texture> text)   //Textured
 {
-    return make_shared<Material>(diffuse, fresnel_coef[cristal_1], Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 0), true, text, 1.0f);
+    return std::make_shared<Material>(diffuse, fresnel_coef[cristal_1], Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, true, text, 1.0f);
 }
 
 //Plastics
-shared_ptr<Material> create_plastic_material(const Color k_d, const Color k_s)   //Non-textured
+std::shared_ptr<Material> create_plastic_material(const Color k_d, const Color k_s)   //Non-textured
 {
-    return make_shared<Material>(dif_spec, fresnel_coef[cristal_1], k_d, k_s, Color(0, 0, 0), false, nullptr, 1.0f);
+    return std::make_shared<Material>(dif_spec, fresnel_coef[cristal_1], k_d, k_s, Color{ 0, 0, 0 }, false, nullptr, 1.0f);
 }
 
-shared_ptr<Material> create_plastic_material(shared_ptr<Textura> text, const Color k_s)   //Textured
+std::shared_ptr<Material> create_plastic_material(std::shared_ptr<Texture> text, const Color k_s)   //Textured
 {
-    return make_shared<Material>(dif_spec, fresnel_coef[cristal_1], Color(0, 0, 0), k_s, Color(0, 0, 0), true, text, 1.0f);
+    return std::make_shared<Material>(dif_spec, fresnel_coef[cristal_1], Color{ 0, 0, 0 }, k_s, Color{ 0, 0, 0 }, true, text, 1.0f);
 }
 
 //Plastics with fresnel
-shared_ptr<Material> create_plastic_material_fresnel(const Color k_d)   //Non-textured
+std::shared_ptr<Material> create_plastic_material_fresnel(const Color k_d)   //Non-textured
 {
-    return make_shared<Material>(dif_spec_fresnel, fresnel_coef[cristal_1], k_d, Color(0, 0, 0), Color(0, 0, 0), false, nullptr, 1.0f);
+    return std::make_shared<Material>(dif_spec_fresnel, fresnel_coef[cristal_1], k_d, Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, false, nullptr, 1.0f);
 }
 
-shared_ptr<Material> create_plastic_material_fresnel(shared_ptr<Textura> text)   //Textured
+std::shared_ptr<Material> create_plastic_material_fresnel(std::shared_ptr<Texture> text)   //Textured
 {
-    return make_shared<Material>{dif_spec_fresnel, fresnel_coef[cristal_1], Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 0), true, text, 1.0f};
+    return std::make_shared<Material>(dif_spec_fresnel, fresnel_coef[cristal_1], Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, true, text, 1.0f);
 }
 
 //Perfect specular
-shared_ptr<Material> create_specular_material()   //Non-textured
+std::shared_ptr<Material> create_specular_material()   //Non-textured
 {
-    return make_shared<Material>(perfect_spec, fresnel_coef[cristal_1], Color(0, 0, 0), Color(255.0f, 255.0f, 255.0f), Color(0, 0, 0), false, nullptr, 1.0f);
+    return std::make_shared<Material>(perfect_spec, fresnel_coef[cristal_1], Color{ 0, 0, 0 }, Color{ 255.0f, 255.0f, 255.0f }, Color{ 0, 0, 0 }, false, nullptr, 1.0f);
 }
 
 //Dielectrics
-shared_ptr<Material> create_dielectric_material(const dielec_type& type)
+std::shared_ptr<Material> create_dielectric_material(const dielec_type& type)
 {
     //We don't need k_s nor k_t, since we'll calculate them through fresnel
-    return make_shared<Material>(dielectric, type, Color(0, 0, 0), Color(0, 0, 0), Color(0, 0, 0), false, nullptr, 1.0f);
+    return std::make_shared<Material>(dielectric, type, Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, false, nullptr, 1.0f);
 }

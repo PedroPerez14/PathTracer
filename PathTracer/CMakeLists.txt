@@ -4,6 +4,6 @@
 cmake_minimum_required (VERSION 3.8)
 
 # Agregue un origen al ejecutable de este proyecto.
-add_executable (PathTracer "MainPathTracer.cpp" "MainPathTracer.h" "Tracer/PathTracer.h" "Tracer/PathTracer.cpp" "Misc/CommonDefines.h" "DataTypes/Vector3.h" "DataTypes/Material.h" "DataTypes/Camera.h")
+add_executable (PathTracer "MainPathTracer.cpp" "MainPathTracer.h" "Tracer/PathTracer.h" "Tracer/PathTracer.cpp" "Misc/CommonDefines.h" "DataTypes/Vector3.h" "DataTypes/Material.h" "DataTypes/Camera.h" "DataTypes/Shape.h" "DataTypes/Cylinder.h" "DataTypes/Plane.h" "DataTypes/Quad.h" "DataTypes/Sphere.h")
 
 # TODO: Agregue pruebas y destinos de instalación si es necesario.

@@ -13,6 +13,7 @@
 #include "../DataTypes/Material.h"
 #include "../Misc/CommonDefines.h"
 #include "../DataTypes/Camera.h"
+#include "../DataTypes/Shape.h"
 
 enum RR_event{ dif, spec, refract, absorb };
 
@@ -35,16 +36,16 @@ public:
     std::shared_ptr<Image> trace();
 
 private:
-    mt19937 mt;
-    uniform_real_distribution<float>dist;
+    std::mt19937 mt;
+    std::uniform_real_distribution<float>dist;
 
     const float stop_threshold = _STOP_THRESHOLD;
     float n_environment = fresnel_coef[air];  //Can be changed using 2nd constructor
 
     //Basic elements of a scene: camera, shapes and lights
     std::shared_ptr<struct Camera> cam;
-    std::vector<shared_ptr<Shape>> scene;
-    std::vector<shared_ptr<PointLight>> point_lights;
+    std::vector<std::shared_ptr<Shape>> scene;
+    std::vector<std::shared_ptr<PointLight>> point_lights;
 
     //Basic rendering info
     int width;
