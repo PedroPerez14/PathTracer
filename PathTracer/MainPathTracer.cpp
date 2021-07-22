@@ -18,20 +18,26 @@ using namespace std;
 */
 int main(int argc, char* argv[])
 {
-    if (argc != 5)
+    /*if (argc != 5)
     {
         cout << "Params: <im_width> <im_height> <paths_per_pixel> <n_threads>" << endl;
         return 1;
-    }
+    }*/
+    if(true == false)
+    { }
     else
     {
         PathTracer* pt;
-        int w = std::stoi(argv[1]);
+        /*int w = std::stoi(argv[1]);
         int h = std::stoi(argv[2]);
         int paths_per_pixel = std::stoi(argv[3]);
-        int n_threads = std::stoi(argv[4]);
+        int n_threads = std::stoi(argv[4]);*/
+        int w = 1920;
+        int h = 1080;
+        int paths_per_pixel = 50;
+        int n_threads = 12;
         pt = new PathTracer(w, h, paths_per_pixel, n_threads);
-
+        
         ///------------CHOOSE A CORNELL BOX SCENE TO RENDER-------///
         //TODO definir las funciones en PathTracer.h
         //cornell_box_morada(rt);
@@ -48,16 +54,18 @@ int main(int argc, char* argv[])
         auto end = chrono::system_clock::now();
         chrono::duration<float, std::milli> duration = end - start;
         cout << "Generating image file..." << endl;
-        //Save image twice, before tone mapping and after
-        result->save_output(USER_PATH + "_nomap", "ppm");
+        //Prepare image for tone mapping (c = 2^15)
+        result->initialize_from_vector();
+        //Save image twice, before and after applying tone mapping operators
+        result->save_output(_USER_PATH + "_nomap", "ppm");
 
         result->c = 255.0f;
         result->tone_map("reinhard_g_pt");
-        result->save_output(USER_PATH + "_tonemapped", "ppm");
+        result->save_output(_USER_PATH + "_tonemapped", "ppm");
 
         cout << "Image generated succesfully." << std::endl;
         cout << "Total elapsed time: " << duration.count() << " ms" << endl;
-        cout << "Output can be found at: " + USER_PATH << endl;
+        cout << "Output can be found at: " + _USER_PATH << endl;
     }
     //test
 	return 0;

@@ -14,14 +14,14 @@ PathTracer::PathTracer(int width, int height, int paths_per_pixel, int n_threads
     this->paths_per_pixel = paths_per_pixel;
     this->n_threads = n_threads;
 
-    cam = create_camera(Vector3{ 0.001f, 0.0f, 0.0f }, width, height, 60.0f);
+    cam = create_camera(Vector3{ 0.001f, 0.0f, 0.0f }, width, height, (float)_FOV_H);
     workQueue = new ConcurrentBoundedQueue<int>(width * height);
 
     mt = std::mt19937(std::random_device()());
     dist = std::uniform_real_distribution<float>(0.0f, 1.0f);
 }
 
-PathTracer::PathTracer(int width, int height, int paths_per_pixel, Vector3& cam_pos, int n_threads, dielec_type env)
+PathTracer::PathTracer(int width, int height, int paths_per_pixel, Vector3& cam_pos, int n_threads, enum dielec_type env)
 {
     this->width = width;
     this->height = height;
@@ -29,7 +29,7 @@ PathTracer::PathTracer(int width, int height, int paths_per_pixel, Vector3& cam_
     this->n_threads = n_threads;
     this->n_environment = fresnel_coef[env];
 
-    cam = create_camera(cam_pos, width, height, _FOV_H);
+    cam = create_camera(cam_pos, width, height, (float)_FOV_H);
     workQueue = new ConcurrentBoundedQueue<int>(width * height);
 
     mt = std::mt19937(std::random_device()());
@@ -43,16 +43,27 @@ void PathTracer::add_shape(std::shared_ptr<Shape> s)
 
 void PathTracer::add_point_light(std::shared_ptr<PointLight> pl)
 {
+    float lum_tot = 0.0f;
     point_lights.push_back(pl);
+
+    for (shared_ptr<PointLight> pl : point_lights)
+    {
+        lum_tot += pl->color.mod(); //La idea original era usar la potencia, pero a ver que pasa con luminancia
+    }
+    for (shared_ptr<PointLight> lp : point_lights)
+    {
+        lp->prob = (lp->color.mod() / (float)lum_tot);
+        cout << "La luz puntual " << lp->color.to_string() << " tiene Prob. " << lp->prob << endl;
+    }
 }
 
 std::shared_ptr<Image> PathTracer::trace()
 {
     std::vector<thread> P = std::vector<thread>(n_threads);
-    shared_ptr<Image> image = make_shared<Image>(Image{});
+    shared_ptr<Image> image(new Image{});
     image->width = width;
     image->height = height;
-    image->pixels = std::vector<Color>(width * height);
+    image->pixels = std::vector<Color>((size_t)width * height);
     cout << "Queuing work and creating worker threads..." << endl;
     for (int i = 0; i < height; i++)
     {
@@ -72,7 +83,7 @@ std::shared_ptr<Image> PathTracer::trace()
     
     cout << "Workers have finished." << endl;
 
-    return std::shared_ptr<Image>();
+    return image;
 }
 
 void PathTracer::trace_pixel(std::shared_ptr<Image>& img, int nworker)
@@ -103,7 +114,7 @@ void PathTracer::trace_pixel(std::shared_ptr<Image>& img, int nworker)
         j = pixel_to_trace % width;
         color = Color{0.0f, 0.0f, 0.0f};
         //<paths_per_pixel> paths will be generated and calculated to get average color of a pixel
-        for (int i = 0; i < paths_per_pixel; i++)
+        for (int k = 0; k < paths_per_pixel; k++)
         {
             ray_on_air = true;      //Start assuming the camera isn't inside a shape
             stop = false;
@@ -113,10 +124,10 @@ void PathTracer::trace_pixel(std::shared_ptr<Image>& img, int nworker)
             path_point = cam->o;
             last_shape_hit = nullptr;
             n_bounces = 0;
-            rr_event = dif;
+            rr_event = RR_event::dif;
 
             //Start bouncing the path
-            while (!stop && rr_event != absorb)
+            while (!stop && rr_event != RR_event::absorb)
             {
                 float min_distance = std::numeric_limits<float>::max();
                 closest_shape = nullptr;
@@ -176,7 +187,7 @@ void PathTracer::trace_pixel(std::shared_ptr<Image>& img, int nworker)
             color = color + throughput + contr_lp;
         }
         color = color / (float)paths_per_pixel;
-        img->pixels.at(i * width + j) = color;
+        img->pixels.at((size_t)i * width + j) = color;
     }
     cout << "WORKER " << nworker << " finished its assigned work" << endl;
 }
@@ -387,8 +398,8 @@ Vector3 PathTracer::specular_sampling(Vector3 n, Vector3 w_i, const bool& on_air
     if (!on_air)
     {
         n = n * -1.0f;
-        w_i.normalize();
     }
+    w_i.normalize();
     return w_i - (n * 2.0f * dot(n, w_i));
 }
 
@@ -397,7 +408,7 @@ Vector3 PathTracer::cosine_sampling(const Vector3& u, const Vector3& v, const Ve
     float theta = acos(sqrt(1.0f - randomfloat(0.0f, 1.0f)));
     float phi = 2.0f * M_PI * randomfloat(0.0f, 1.0f);
     Matrix T = base_change_matrix(u, v, n, origin);
-    Vector3 w_i = T * Vector3{ sinf(theta) * cosf(phi), sinf(theta) * sinf(phi), cosf(theta) };
+    Vector3 w_i = mult_dir(T, Vector3{ sinf(theta) * cosf(phi), sinf(theta) * sinf(phi), cosf(theta) });
     return w_i;
 }
 

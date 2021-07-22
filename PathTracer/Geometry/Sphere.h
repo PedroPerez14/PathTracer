@@ -7,7 +7,7 @@
 #pragma once
 #include "Shape.h"
 
-class Sphere : protected Shape
+class Sphere : public Shape
 {
 private:
 	Vector3 center;
@@ -27,7 +27,7 @@ public:
 		ref_point = Vector3{ center.x, center.y, center.z + r };
 	}
 
-	void uv(Vector p, float& u, float& v) override
+	void uv(Vector3 p, float& u, float& v) override
 	{
 		Vector3 base_x = cross(center - ref_point, axis);
 		Vector3 base_y = axis;
@@ -35,8 +35,8 @@ public:
 		base_x.normalize();
 		base_y.normalize();
 		base_z.normalize();
-		p = change_coord_system(p, base_x, base_y, base_z, center);
-		Vector c{ 0, 0, 0 };
+		p = change_coord_system_point(p, base_x, base_y, base_z, center);
+		Vector3 c{ 0, 0, 0 };
 		u = atan2((p.x - c.x) / (p - c).mod(), (p.z - c.z) / (p - c).mod());
 		v = acos((p.y - c.y) / (p - c).mod());
 	}
@@ -57,12 +57,12 @@ public:
 			if (t_small >= (float)_EPSILON)
 			{
 				intersects = true;
-				intersection = o + (t_small * d);
+				intersection = o + (d * t_small);
 			}
 			else if (t_big >= (float)_EPSILON)
 			{
 				intersects = true;
-				intersection = o + (t_big * d);
+				intersection = o + (d * t_big);
 			}
 			else
 			{
@@ -121,11 +121,11 @@ public:
 		float p_perp = (n1 * cos_th_entr - n2 * cos_refrac) / (n1 * cos_th_entr + n2 * cos_refrac);
 		float fr = (p_paral * p_paral + p_perp * p_perp) / 2.0f;
 		float ft = 1.0f - fr;
-		k_s = Pixel(fr, fr, fr);
-		k_t = Pixel(ft, ft, ft);
+		k_s = Color{ fr, fr, fr };
+		k_t = Color{ ft, ft, ft };
 	}
 
-	Vector3 refract_ray(Vector3 n, const Vector3& w_entr, const float& n_env, bool& ray_through_air) override
+	Vector3 refract_ray(Vector3 n, Vector3 w_entr, const float& n_env, bool& ray_through_air) override
 	{
 		n.normalize();
 		w_entr.normalize();

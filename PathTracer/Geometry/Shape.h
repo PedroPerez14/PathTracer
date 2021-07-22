@@ -7,6 +7,7 @@
 #pragma once
 
 #include <iostream>
+#include "../Misc/Transform.h"
 #include "../DataTypes/Vector3.h"
 #include "../DataTypes/Material.h"
 
@@ -26,9 +27,9 @@ public:
 
 	virtual Vector3 lat_tan(const Vector3& surface_point) = 0;
 
-	virtual Vector3 fresnel(Vector3 w_o, Vector3 n, Color& k_s, Color& k_t, const float& n_env, const bool& ray_through_air) = 0;
+	virtual void fresnel(Vector3 w_o, Vector3 n, Color& k_s, Color& k_t, const float& n_env, const bool& ray_through_air) = 0;
 
-	virtual Vector3 refract_ray(Vector3 n, const Vector3& w_entr, const float& n_env, bool& ray_through_air) = 0;
+	virtual Vector3 refract_ray(Vector3 n, Vector3 w_entr, const float& n_env, bool& ray_through_air) = 0;
 
 	virtual void uv(Vector3 p, float& azimuth, float& inclination)
 	{

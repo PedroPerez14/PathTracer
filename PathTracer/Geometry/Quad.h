@@ -7,7 +7,7 @@
 #pragma once
 #include "Shape.h"
 
-class Quad : protected Shape
+class Quad : public Shape
 {
 private:
 	float c;
@@ -31,7 +31,7 @@ public:
 		this->mat = mat;
 		n = cross(v1, v2);
 		n.normalize();
-		c = dot(n, origin) * -1.0f;
+		c = -dot(n, origin);
 		 //TODO delete
 		cout << n.to_string() << endl;
 		cout << c << endl;
@@ -40,9 +40,9 @@ public:
 		cout << "--------------------------" << endl;
 	}
 
-	void uv(Vector p, float& u, float& v) override
+	void uv(Vector3 p, float& u, float& v) override
 	{
-		p = change_coord_system(p, v1, v2, cross(v1, v2), origin); //TODO normalize???
+		p = change_coord_system_point(p, v1, v2, cross(v1, v2), origin); //TODO normalize???
 		u = p.x;
 		v = p.y;
 	}
@@ -50,17 +50,18 @@ public:
 	Vector3 intersect(const Vector3& o, const Vector3& d, bool& intersects) override
 	{
 		Vector3 intersection{ 0, 0, 0 };
-		float t = ((c + dot(o, n)) * -1.0f / dot(d, n));
+		float t = (-1.0f * (c + dot(o, n)) / dot(d, n));
 		if (t <= (float)_EPSILON)
 		{
 			intersects = false;
+			intersection = Vector3{0.0f, 0.0f, 0.0f};
 		}
 		else
 		{
-			intersection = o + (d * t);
+			intersection = Vector3{ o.x + d.x * t, o.y + d.y * t, o.z + d.z * t };
 			float u, v;
 			uv(intersection, u, v);
-			intersects = (u < 1.0f && u > 0.0f && v < 1.0f && v > 0.0f);
+			intersects = (u < 1 && u > 0 && v < 1 && v > 0);
 		}
 		return intersection;
 	}
@@ -102,13 +103,13 @@ public:
 		k_t = Color{ ft, ft, ft };
 	}
 
-	Vector3 refract_ray(Vector3 n, Vector3 w_entr, const float& n_medio)
+	Vector3 refract_ray(Vector3 n, Vector3 w_entr, const float& n_medio, bool& ray_through_air) override
 	{
 		n.normalize();
 		w_entr.normalize();
-		float n1 = n_env;
+		float n1 = n_medio;
 		float n2 = mat->n_fresnel;
-		if (dot(w_o * -1.0f, n) > 0.0f)
+		if (dot(w_entr * -1.0f, n) > 0.0f)
 		{
 			n = n * -1.0f;
 		}

@@ -5,8 +5,12 @@
  */
 
 #pragma once
+#include <iostream>
+#include <string>
 
-#define _FOV_H 60				//FOV horizontal de la cámara
-#define _STOP_THRESHOLD 0.9f	//Umbral de probabilidad de parada de la ruleta rusa y otros eventos
-#define _REINHARD_DELTA 0.001f	//Necesario para que Reinhard no haga cosas raras
-#define _EPSILON 0.001f			//Para las intersecciones de rayos y geometria
+#define _FOV_H 60.0f												//FOV horizontal de la cámara
+#define _STOP_THRESHOLD 0.9f										//Umbral de probabilidad de parada de la ruleta rusa y otros eventos
+#define _REINHARD_DELTA 0.001f										//Necesario para que Reinhard no haga cosas raras
+#define _EPSILON 0.001f												//Para las intersecciones de rayos y geometria
+
+const std::string _USER_PATH = "C:/Users/Pedro/Desktop/PathTracer";	//Save dir and name for output
