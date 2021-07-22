@@ -9,11 +9,14 @@
 #include <random>
 #include <vector>
 #include <memory>
+#include "../DataTypes/Image.h"
+#include "../DataTypes/Camera.h"
 #include "../DataTypes/Vector3.h"
 #include "../DataTypes/Material.h"
+#include "../DataTypes/PointLight.h"
 #include "../Misc/CommonDefines.h"
-#include "../DataTypes/Camera.h"
-#include "../DataTypes/Shape.h"
+#include "../Geometry/Shape.h"
+#include "../Concurrency/ConcurrentBoundedQueue.h"
 
 enum RR_event{ dif, spec, refract, absorb };
 
@@ -39,7 +42,7 @@ private:
     std::mt19937 mt;
     std::uniform_real_distribution<float>dist;
 
-    const float stop_threshold = _STOP_THRESHOLD;
+    const float stop_threshold = (float)_STOP_THRESHOLD;
     float n_environment = fresnel_coef[air];  //Can be changed using 2nd constructor
 
     //Basic elements of a scene: camera, shapes and lights
@@ -55,8 +58,8 @@ private:
 
     ConcurrentBoundedQueue<int>* workQueue;
 
-    void trace_pixel(std::shared_ptr<std::vector<Color>>& img, int nworker);
-    RR_event russian_roulette(const std::shared_ptr<Shape>& closest, const Vector3& intersect_point, const Vector3& w_o, Color& accum, Vector3& w_i, bool& on_air);
+    void trace_pixel(std::shared_ptr<Image>& img, int nworker);
+    RR_event russian_roulette(const std::shared_ptr<Shape>& closest, const Vector3& intersect_point, const Vector3& w_o, Color& acum, Vector3& w_i, bool& on_air);
     Color get_point_lights(Vector3 p, std::shared_ptr<Shape> shape, const RR_event& event);
 
     Vector3 specular_sampling(Vector3 n, Vector3 w_i, const bool& on_air);

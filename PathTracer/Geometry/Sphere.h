@@ -29,9 +29,12 @@ public:
 
 	void uv(Vector p, float& u, float& v) override
 	{
-		Vector3 base_x = cross(center - ref_point, axis).normalize();
-		Vector3 base_y = axis.normalize();
-		Vector3 base_z = cross(base_x, axis).normalize();
+		Vector3 base_x = cross(center - ref_point, axis);
+		Vector3 base_y = axis;
+		Vector3 base_z = cross(base_x, axis);
+		base_x.normalize();
+		base_y.normalize();
+		base_z.normalize();
 		p = change_coord_system(p, base_x, base_y, base_z, center);
 		Vector c{ 0, 0, 0 };
 		u = atan2((p.x - c.x) / (p - c).mod(), (p.z - c.z) / (p - c).mod());
@@ -75,17 +78,23 @@ public:
 
 	Vector3 normal_at_point(const Vector3& p) override
 	{
-		return (p - center).normalize()
+		Vector3 retval = (p - center);
+		retval.normalize();
+		return retval;
 	}
 
 	Vector3 long_tan(const Vector3& surface_point) override
 	{
-		return cross(axis, normal_at_point(surface_point)).normalize();
+		Vector3 retval = cross(axis, normal_at_point(surface_point));
+		retval.normalize();
+		return retval;
 	}
 
 	Vector3 lat_tan(const Vector3& surface_point) override
 	{
-		return cross(normal_at_point(surface_point), long_tan(surface_point)).normalize();
+		Vector3 retval = cross(normal_at_point(surface_point), long_tan(surface_point));
+		retval.normalize();
+		return retval;
 	}
 
 	void fresnel(Vector3 w_o, Vector3 n, Color& k_s, Color& k_t, const float& n_env, const bool& ray_through_air) override

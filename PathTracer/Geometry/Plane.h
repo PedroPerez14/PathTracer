@@ -20,7 +20,8 @@ public:
 
 	Plane(Vector3 origin, Vector3 v1, Vector3 v2, shared_ptr<Material> mat)
 	{
-		n = cross(v1, v2).normalize();
+		n = cross(v1, v2);
+		n.normalize();
 		c = dot(n, origin) * -1.0f;
 		this->v1 = v1;
 		this->v2 = v2;

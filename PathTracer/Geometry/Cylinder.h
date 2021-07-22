@@ -23,27 +23,33 @@ public:
 	//For infinite cylinders
 	Cylinder(const Vector3& origin, const Vector3& axis, const float& r, shared_ptr<Material> mat)
 	{
-		this->axis = axis.normalize();
+		this->axis = axis;
 		this->origin = origin;
 		this->r = r;
 		this->height = 0;
 		this->mat = mat;
+		this->axis.normalize();
 
-		this->dir1 = this->axis.perpendicular().normalize();
-		this->dir2 = cross(this->axis, dir1).normalize();
+		this->dir1 = this->axis.perpendicular();
+		this->dir2 = cross(this->axis, dir1);
+		this->dir1.normalize();
+		this->dir2.normalize();
 	}
 
 	//Finite cylinders, needs height data
 	Cylinder(const Vector3& origin, const Vector3& axis, const float& r, const float& height, shared_ptr<Material> mat)
 	{
-		this->axis = axis.normalize();
+		this->axis = axis;
 		this->origin = origin;
 		this->r = r;
 		this->height = height;
 		this->mat = mat;
+		this->axis.normalize();
 
-		this->dir1 = this->axis.perpendicular().normalize();
-		this->dir2 = cross(this->axis, dir1).normalize();
+		this->dir1 = this->axis.perpendicular();
+		this->dir2 = cross(this->axis, dir1);
+		this->dir1.normalize();
+		this->dir2.normalize();
 	}
 
 	void uv(Vector3 p, float& u, float& v) override
@@ -157,7 +163,7 @@ public:
 		else
 		{
 			retval = p - axis * v - origin;
-			retval = retval.normalize();
+			retval.normalize();
 		}
 		return retval;
 	}

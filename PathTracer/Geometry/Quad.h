@@ -29,7 +29,8 @@ public:
 			cerr << "ERROR: Incorrect quad dimensions! Errors might happen during execution" << endl;
 		}
 		this->mat = mat;
-		n = cross(v1, v2).normalize();
+		n = cross(v1, v2);
+		n.normalize();
 		c = dot(n, origin) * -1.0f;
 		 //TODO delete
 		cout << n.to_string() << endl;

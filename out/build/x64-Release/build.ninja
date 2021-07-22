@@ -12,7 +12,7 @@
 
 # =============================================================================
 # Project: PathTracer
-# Configurations: Debug
+# Configurations: RelWithDebInfo
 # =============================================================================
 
 #############################################
@@ -24,7 +24,7 @@ ninja_required_version = 1.5
 #############################################
 # Set configuration variable for custom commands.
 
-CONFIGURATION = Debug
+CONFIGURATION = RelWithDebInfo
 # =============================================================================
 # Include auxiliary files.
 
@@ -39,7 +39,7 @@ include CMakeFiles\rules.ninja
 # Utility command for edit_cache
 
 build CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D "C:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Debug (predeterminado)" && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D C:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Release && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -50,7 +50,7 @@ build edit_cache: phony CMakeFiles\edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D "C:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Debug (predeterminado)" && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer -B"C:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Debug (predeterminado)""
+  COMMAND = cmd.exe /C "cd /D C:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Release && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer -BC:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Release"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -71,36 +71,36 @@ build rebuild_cache: phony CMakeFiles\rebuild_cache.util
 
 build cmake_object_order_depends_target_PathTracer: phony || PathTracer\CMakeFiles\PathTracer.dir
 
-build PathTracer\CMakeFiles\PathTracer.dir\MainPathTracer.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\MainPathTracer.cpp || cmake_object_order_depends_target_PathTracer
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+build PathTracer\CMakeFiles\PathTracer.dir\MainPathTracer.cpp.obj: CXX_COMPILER__PathTracer_RelWithDebInfo ..\..\..\PathTracer\MainPathTracer.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG
   OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
   OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir
   TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
   TARGET_PDB = PathTracer\PathTracer.pdb
 
-build PathTracer\CMakeFiles\PathTracer.dir\Tracer\PathTracer.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\Tracer\PathTracer.cpp || cmake_object_order_depends_target_PathTracer
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+build PathTracer\CMakeFiles\PathTracer.dir\Tracer\PathTracer.cpp.obj: CXX_COMPILER__PathTracer_RelWithDebInfo ..\..\..\PathTracer\Tracer\PathTracer.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG
   OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
   OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir\Tracer
   TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
   TARGET_PDB = PathTracer\PathTracer.pdb
 
-build PathTracer\CMakeFiles\PathTracer.dir\Concurrency\BoundedQueue.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\Concurrency\BoundedQueue.cpp || cmake_object_order_depends_target_PathTracer
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+build PathTracer\CMakeFiles\PathTracer.dir\Concurrency\BoundedQueue.cpp.obj: CXX_COMPILER__PathTracer_RelWithDebInfo ..\..\..\PathTracer\Concurrency\BoundedQueue.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG
   OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
   OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir\Concurrency
   TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
   TARGET_PDB = PathTracer\PathTracer.pdb
 
-build PathTracer\CMakeFiles\PathTracer.dir\Concurrency\ConcurrentBoundedQueue.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\Concurrency\ConcurrentBoundedQueue.cpp || cmake_object_order_depends_target_PathTracer
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+build PathTracer\CMakeFiles\PathTracer.dir\Concurrency\ConcurrentBoundedQueue.cpp.obj: CXX_COMPILER__PathTracer_RelWithDebInfo ..\..\..\PathTracer\Concurrency\ConcurrentBoundedQueue.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG
   OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
   OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir\Concurrency
   TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
   TARGET_PDB = PathTracer\PathTracer.pdb
 
-build PathTracer\CMakeFiles\PathTracer.dir\Concurrency\Semaphore.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\Concurrency\Semaphore.cpp || cmake_object_order_depends_target_PathTracer
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+build PathTracer\CMakeFiles\PathTracer.dir\Concurrency\Semaphore.cpp.obj: CXX_COMPILER__PathTracer_RelWithDebInfo ..\..\..\PathTracer\Concurrency\Semaphore.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG
   OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
   OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir\Concurrency
   TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
@@ -114,8 +114,8 @@ build PathTracer\CMakeFiles\PathTracer.dir\Concurrency\Semaphore.cpp.obj: CXX_CO
 #############################################
 # Link the executable PathTracer\PathTracer.exe
 
-build PathTracer\PathTracer.exe: CXX_EXECUTABLE_LINKER__PathTracer_Debug PathTracer\CMakeFiles\PathTracer.dir\MainPathTracer.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Tracer\PathTracer.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\BoundedQueue.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\ConcurrentBoundedQueue.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\Semaphore.cpp.obj
-  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+build PathTracer\PathTracer.exe: CXX_EXECUTABLE_LINKER__PathTracer_RelWithDebInfo PathTracer\CMakeFiles\PathTracer.dir\MainPathTracer.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Tracer\PathTracer.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\BoundedQueue.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\ConcurrentBoundedQueue.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\Semaphore.cpp.obj
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
   OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
@@ -131,7 +131,7 @@ build PathTracer\PathTracer.exe: CXX_EXECUTABLE_LINKER__PathTracer_Debug PathTra
 # Utility command for edit_cache
 
 build PathTracer\CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D "C:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Debug (predeterminado)\PathTracer" && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  COMMAND = cmd.exe /C "cd /D C:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Release\PathTracer && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -142,7 +142,7 @@ build PathTracer\edit_cache: phony PathTracer\CMakeFiles\edit_cache.util
 # Utility command for rebuild_cache
 
 build PathTracer\CMakeFiles\rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D "C:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Debug (predeterminado)\PathTracer" && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer -B"C:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Debug (predeterminado)""
+  COMMAND = cmd.exe /C "cd /D C:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Release\PathTracer && "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --regenerate-during-build -SC:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer -BC:\Users\Pedro\Desktop\Universidad\Cuarto\InformaticaGrafica\PathTracer\out\build\x64-Release"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -162,14 +162,14 @@ build PathTracer.exe: phony PathTracer\PathTracer.exe
 # =============================================================================
 
 #############################################
-# Folder: C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Debug (predeterminado)
+# Folder: C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Release
 
 build all: phony PathTracer\all
 
 # =============================================================================
 
 #############################################
-# Folder: C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Debug (predeterminado)/PathTracer
+# Folder: C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Release/PathTracer
 
 build PathTracer\all: phony PathTracer\PathTracer.exe
 

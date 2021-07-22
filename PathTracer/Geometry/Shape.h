@@ -5,9 +5,11 @@
  */
 
 #pragma once
-#include "Vector3.h"
-#include "Material.h"
+
 #include <iostream>
+#include "../DataTypes/Vector3.h"
+#include "../DataTypes/Material.h"
+
 
 class Shape
 {
@@ -35,7 +37,7 @@ public:
 		inclination = 0;
 	}
 
-	Color get_color(const Vector3& p) // divido por 255??
+	Color get_color(const Vector3& p) // divido por 255?? nah, voy a tener todo entre 0 y 1 controlado
 	{
 		if (mat->has_texture)
 		{
@@ -45,5 +47,10 @@ public:
 		}
 		//else
 		return mat->k_d * mat->mul;
+	}
+
+	std::shared_ptr<Material> get_mat() const
+	{
+		return mat;
 	}
 };

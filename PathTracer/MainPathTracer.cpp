@@ -4,6 +4,7 @@
  * Coms: Punto de entrada de la aplicación
  */
 
+#pragma once
 #include "MainPathTracer.h"
 
 using namespace std;
@@ -36,23 +37,23 @@ int main(int argc, char* argv[])
         //cornell_box_morada(rt);
         //cornell_box_plano(rt);
         //cornell_box_rv(rt);
-        cornell_box_blanca(rt);
+        white_cornell_box(pt);
         //cornell_box_tierra_emisora(rt);
         //cornell_box_cuadrado(rt);
         //espacio(rt);
         ///--------------------------------------------------------///
 
         auto start = chrono::system_clock::now();
-        shared_ptr<Image> result = pt->trace();
+        std::shared_ptr<Image> result = pt->trace();
         auto end = chrono::system_clock::now();
         chrono::duration<float, std::milli> duration = end - start;
         cout << "Generating image file..." << endl;
         //Save image twice, before tone mapping and after
-        result->save_changes(USER_PATH + "_nomap", "ppm");
+        result->save_output(USER_PATH + "_nomap", "ppm");
 
-        result->set_c(255.0f);
+        result->c = 255.0f;
         result->tone_map("reinhard_g_pt");
-        result->save_changes(USER_PATH + "_tonemapped", "ppm");
+        result->save_output(USER_PATH + "_tonemapped", "ppm");
 
         cout << "Image generated succesfully." << std::endl;
         cout << "Total elapsed time: " << duration.count() << " ms" << endl;
