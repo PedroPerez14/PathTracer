@@ -13,5 +13,3 @@
 #include "DataTypes/Image.h"
 #include "Tracer/PathTracer.h"
 #include "Scenes/PrebakedScenes.h"
-
-const string USER_PATH = "C:/Users/Pedro/Desktop/PathTracer";

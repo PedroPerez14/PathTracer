@@ -106,6 +106,48 @@ build PathTracer\CMakeFiles\PathTracer.dir\Concurrency\Semaphore.cpp.obj: CXX_CO
   TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
   TARGET_PDB = PathTracer\PathTracer.pdb
 
+build PathTracer\CMakeFiles\PathTracer.dir\DataTypes\Vector3.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\DataTypes\Vector3.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+  OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
+  OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir\DataTypes
+  TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
+  TARGET_PDB = PathTracer\PathTracer.pdb
+
+build PathTracer\CMakeFiles\PathTracer.dir\DataTypes\Image.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\DataTypes\Image.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+  OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
+  OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir\DataTypes
+  TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
+  TARGET_PDB = PathTracer\PathTracer.pdb
+
+build PathTracer\CMakeFiles\PathTracer.dir\DataTypes\Camera.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\DataTypes\Camera.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+  OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
+  OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir\DataTypes
+  TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
+  TARGET_PDB = PathTracer\PathTracer.pdb
+
+build PathTracer\CMakeFiles\PathTracer.dir\DataTypes\Texture.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\DataTypes\Texture.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+  OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
+  OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir\DataTypes
+  TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
+  TARGET_PDB = PathTracer\PathTracer.pdb
+
+build PathTracer\CMakeFiles\PathTracer.dir\DataTypes\Material.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\DataTypes\Material.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+  OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
+  OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir\DataTypes
+  TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
+  TARGET_PDB = PathTracer\PathTracer.pdb
+
+build PathTracer\CMakeFiles\PathTracer.dir\Misc\Transform.cpp.obj: CXX_COMPILER__PathTracer_Debug ..\..\..\PathTracer\Misc\Transform.cpp || cmake_object_order_depends_target_PathTracer
+  FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
+  OBJECT_DIR = PathTracer\CMakeFiles\PathTracer.dir
+  OBJECT_FILE_DIR = PathTracer\CMakeFiles\PathTracer.dir\Misc
+  TARGET_COMPILE_PDB = PathTracer\CMakeFiles\PathTracer.dir\
+  TARGET_PDB = PathTracer\PathTracer.pdb
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target PathTracer
@@ -114,7 +156,7 @@ build PathTracer\CMakeFiles\PathTracer.dir\Concurrency\Semaphore.cpp.obj: CXX_CO
 #############################################
 # Link the executable PathTracer\PathTracer.exe
 
-build PathTracer\PathTracer.exe: CXX_EXECUTABLE_LINKER__PathTracer_Debug PathTracer\CMakeFiles\PathTracer.dir\MainPathTracer.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Tracer\PathTracer.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\BoundedQueue.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\ConcurrentBoundedQueue.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\Semaphore.cpp.obj
+build PathTracer\PathTracer.exe: CXX_EXECUTABLE_LINKER__PathTracer_Debug PathTracer\CMakeFiles\PathTracer.dir\MainPathTracer.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Tracer\PathTracer.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\BoundedQueue.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\ConcurrentBoundedQueue.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Concurrency\Semaphore.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\DataTypes\Vector3.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\DataTypes\Image.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\DataTypes\Camera.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\DataTypes\Texture.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\DataTypes\Material.cpp.obj PathTracer\CMakeFiles\PathTracer.dir\Misc\Transform.cpp.obj
   FLAGS = /DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1
   LINK_FLAGS = /machine:x64 /debug /INCREMENTAL /subsystem:console
   LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib

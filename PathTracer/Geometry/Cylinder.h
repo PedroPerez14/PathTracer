@@ -6,8 +6,9 @@
 
 #pragma once
 #include "Shape.h"
+#include "Plane.h"
 
-class Cylinder : protected Shape
+class Cylinder : public Shape
 {
 private: 
 	float r;
@@ -54,7 +55,7 @@ public:
 
 	void uv(Vector3 p, float& u, float& v) override
 	{
-		p = change_coord_system(p, dir1, dir2, axis, origin);
+		p = change_coord_system_point(p, dir1, dir2, axis, origin);
 		Vector3 dist_origin = p - origin;
 		u = atan2((p.x - origin.x) / dist_origin.mod(),
 				  (p.z - origin.z) / dist_origin.mod());
@@ -64,13 +65,15 @@ public:
 	Vector3 intersect(const Vector3& o, const Vector3& d, bool& intersects) override
 	{
 		Vector3 intersection{ 0, 0, 0 };
-		Vector3 o2 = change_coord_system(o, dir1, dir2, axis);
+		Vector3 o2 = change_coord_system_point(o, dir1, dir2, axis);
 		o2.z = 0;
-		Vector3 d2 = change_coord_system(d, dir1, dir2, axis);
+		Vector3 d2 = change_coord_system_dir(d, dir1, dir2, axis);
 		d2.z = 0;
-		Vector3 origin2 = change_coord_system(origin, dir1, dir2, axis);
+		Vector3 origin2 = change_coord_system_point(origin, dir1, dir2, axis);
+		origin2.z = 0;
 		float a = d2.mod() * d2.mod();
 		float b = 2 * dot(d2, o2 - origin2);
+		float c = (o2 - origin2).mod() * (o2 - origin2).mod() - r * r;
 		float root = b * b - 4 * a * c;
 
 		if (root >= (float)_EPSILON)
@@ -110,11 +113,13 @@ public:
 			{
 				intersects = false;
 				bool intersects_2;
-				Vector3 p2 = Plane(origin + axis * height, dir1, dir2, nullptr).intersect(o, d, intersects_2);
-				Vector3 dist = p_2 - (origin + axis * height);
+				Plane plane1 = Plane(origin + (axis * height), dir1, dir2, create_specular_material());
+				Vector3 p2 = plane1.intersect(o, d, intersects_2);
+				Vector3 dist = p2 - (origin + axis * height);
 				intersects_2 = intersects_2 && dist.mod() < r;
 				bool intersects_3;
-				Vector3 p3 = Plane(origin, dir1, dir2, nullptr).intersect(o, d, intersects_3);
+				Plane plane2 = Plane(origin, dir1, dir2, create_specular_material());
+				Vector3 p3 = plane2.intersect(o, d, intersects_3);
 				dist = p3 - origin;
 				intersects_3 = intersects_3 && dist.mod() < r;
 
@@ -144,10 +149,11 @@ public:
 				}
 			}
 		}
+
 		return intersection;
 	}
 
-	Vector3 normal_at_point(const Vector& p) override
+	Vector3 normal_at_point(const Vector3& p) override
 	{
 		float u, v;
 		uv(p, u, v);
@@ -171,14 +177,16 @@ public:
 	Vector3 long_tan(const Vector3& surface_point) override
 	{
 		float u, v;
-		uv(p, u, v);
+		uv(surface_point, u, v);
 		if (v >= height - (float)_EPSILON || v <= (float)_EPSILON)
 		{
 			return dir1;
 		}
 		else
 		{
-			return cross(axis, normal_at_point(surface_point)).normalize();
+			Vector3 retval = cross(axis, normal_at_point(surface_point));
+			retval.normalize();
+			return retval;
 		}
 	}
 
@@ -225,7 +233,7 @@ public:
 		k_t = Color{ ft, ft, ft };
 	}
 
-	Vector3 refract_ray(Vector3 n, const Vector3& w_entr, const float& n_env, bool& ray_through_air) override
+	Vector3 refract_ray(Vector3 n, Vector3 w_entr, const float& n_env, bool& ray_through_air) override
 	{
 		n.normalize();
 		w_entr.normalize();

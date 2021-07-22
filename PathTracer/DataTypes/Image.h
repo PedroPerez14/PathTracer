@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 #include "Vector3.h"
+#include "../Misc/CommonDefines.h"
 using namespace std;
 
 struct Image
@@ -17,7 +18,7 @@ struct Image
 	std::vector<Color> pixels;
 	int height, width;
 	//For Reinhard tone mapping
-	float r_max, g_max, b_max, l_max, l_min;
+	float r_max, g_max, b_max, l_max;
 	float log_avg_r, log_avg_g, log_avg_b, log_avg_l;
 	float max = 0.0f;
 	float c;
@@ -114,32 +115,34 @@ struct Image
         }
 	}
 
+    void initialize_from_vector() {
+        float l;
+        float l_acum = 0;
+        unsigned long int n_pixels = 0;       //Numero de pixeles tenidos en cuenta, ignoro los que son 100% negros
+        c = powf(2.0f, 15.0f);
+        l_max = 0;
+        Color px;
+        for (Color p : pixels)
+        {
+            //ignorar puntos negros
+            if (max_px(p) != 0.0f)
+            {
+                if (max_px(p) > max)
+                {
+                    max = max_px(p);
+                }
+                px = XYZtoYxy(RGBtoXYZ(p));
+                l = px.r; //La primera componente del pixel es la luminancia
+                if (l > l_max) { l_max = l; }
+                l_acum = l_acum + (float)logf(((float)_REINHARD_DELTA + l));
+                n_pixels++;
+            }
+        }
+        log_avg_l = expf(l_acum / (float)(n_pixels));
+        cout << log_avg_l << endl;
+    }
+
 };
 
-string read_line(ifstream& in)
-{
-	string ret;
-	bool end = false;
-	while (!end)
-	{
-		in >> ret;
-		if (ret[0] == '#')
-		{
-			if (ret.substr(0, 5) == "#MAX=")
-			{
-				ret = ret.substr(5);
-				end = true;
-			}
-			else
-			{
-				getline(in, ret);
-			}
-		}
-		else
-		{
-			end = true;
-		}
-	}
-	return ret;
-}
-//TODO harán falta más cosas
+string read_line(ifstream& in);
+//TODO harán falta más cosas?

@@ -32,7 +32,7 @@
 					]
 				}
 			],
-			"name" : "RelWithDebInfo",
+			"name" : "Debug",
 			"projects" : 
 			[
 				{
@@ -53,7 +53,7 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "PathTracer::@e24932fdad16456b4e87",
-					"jsonFile" : "target-PathTracer-RelWithDebInfo-942aab8b5c90f1fedee9.json",
+					"jsonFile" : "target-PathTracer-Debug-a3c1da60ea51b65be7e7.json",
 					"name" : "PathTracer",
 					"projectIndex" : 0
 				}
@@ -63,7 +63,7 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Release",
+		"build" : "C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer/out/build/x64-Debug (predeterminado)",
 		"source" : "C:/Users/Pedro/Desktop/Universidad/Cuarto/InformaticaGrafica/PathTracer"
 	},
 	"version" : 

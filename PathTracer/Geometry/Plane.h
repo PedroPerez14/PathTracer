@@ -6,8 +6,9 @@
 
 #pragma once
 #include "Shape.h"
+#include "../Misc/Transform.h"
 
-class Plane : protected Shape
+class Plane : public Shape
 {
 private:
 	float c;
@@ -22,7 +23,7 @@ public:
 	{
 		n = cross(v1, v2);
 		n.normalize();
-		c = dot(n, origin) * -1.0f;
+		c = abs(dot(n, origin));
 		this->v1 = v1;
 		this->v2 = v2;
 		this->origin = origin;
@@ -31,18 +32,19 @@ public:
 
 	void uv(Vector3 p, float& u, float& v) override
 	{
-		p = change_coord_system(p, v1, v2, dot(v1, v2), origin);
+		p = change_coord_system_point(p, v1, v2, cross(v1, v2), origin);
 		u = p.x;
 		v = p.y;
 	}
 
 	Vector3 intersect(const Vector3& o, const Vector3& d, bool& intersects) override
 	{
-		Vector3 intersection = Vector3{ 0, 0, 0 };
-		float t = ((c + dot(o, n)) * -1.0f / dot(d, n));
+		Vector3 intersection;
+		float t = (-1.0f * (c + dot(o, n)) / dot(d, n));
 		if (t <= (float)_EPSILON)
 		{
 			intersects = false;
+			intersection = Vector3{ 0.0f, 0.0f, 0.0f };
 		}
 		else
 		{
@@ -52,7 +54,7 @@ public:
 		return intersection;
 	}
 
-	Vector3 normal_at_point(const Vector& p) override
+	Vector3 normal_at_point(const Vector3& p) override
 	{
 		return n;
 	}
@@ -89,20 +91,20 @@ public:
 		k_t = Color{ ft, ft, ft };
 	}
 
-	Vector3 refract_ray(Vector3 n, Vector3 w_entr, const float& n_medio)
+	Vector3 refract_ray(Vector3 n, Vector3 w_entr, const float& n_medio, bool& ray_through_air) override
 	{
 		n.normalize();
 		w_entr.normalize();
-		float n1 = n_env;
+		float n1 = n_medio;
 		float n2 = mat->n_fresnel;
-		if (dot(w_o * -1.0f, n) > 0.0f)
+		if (dot(w_entr * -1.0f, n) > 0.0f)
 		{
 			n = n * -1.0f;
 		}
 		float mu = n1 / n2;
 		float cos_th_entr = dot(w_entr * -1.0f, n);
 		float sin_th_t_2 = mu * mu * (1 - (cos_th_entr * cos_th_entr));
-		return w_entr * mu + n * (mu * cos_th_entr - sqrtf(1 - sin_th_t_2));
+		return (w_entr * mu + n * (mu * cos_th_entr - sqrtf(1 - sin_th_t_2)));
 	}
 
 };
