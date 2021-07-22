@@ -5,9 +5,13 @@
  */
 
 #pragma once
+#include <stdlib.h>
 #include <iostream>
 #include <string>
 #include <chrono>
+#include <string>
+#include "DataTypes/Image.h"
 #include "Tracer/PathTracer.h"
+#include "Scenes/PrebakedScenes.h"
 
-const string USER_PATH = "C:\\Users\\Pedro\\Escritorio\\Universidad\\Cuarto\\InformaticaGrafica\\Imagenes Path Tracer\\";
+const string USER_PATH = "C:/Users/Pedro/Desktop/PathTracer";
