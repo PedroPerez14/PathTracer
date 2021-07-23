@@ -60,7 +60,7 @@ private:
 
     void trace_pixel(std::shared_ptr<Image>& img, int nworker);
     RR_event russian_roulette(const std::shared_ptr<Shape>& closest, const Vector3& intersect_point, const Vector3& w_o, Color& acum, Vector3& w_i, bool& on_air);
-    Color get_point_lights(Vector3 p, std::shared_ptr<Shape> shape, const RR_event& event);
+    Color get_point_lights(Vector3 p, std::shared_ptr<Shape> shape, const RR_event& event, Vector3 w_o);
 
     Vector3 specular_sampling(Vector3 n, Vector3 w_i, const bool& on_air);
     Vector3 cosine_sampling(const Vector3& u, const Vector3& v, const Vector3& n, const Vector3& origin);

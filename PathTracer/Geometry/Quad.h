@@ -32,7 +32,33 @@ public:
 		n = cross(v1, v2);
 		n.normalize();
 		c = -dot(n, origin);
-		 //TODO delete
+		//TODO delete
+		cout << n.to_string() << endl;
+		cout << c << endl;
+		cout << v1.to_string() << endl;
+		cout << v2.to_string() << endl;
+		cout << "--------------------------" << endl;
+	}
+
+	Quad(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, shared_ptr<Material> mat, bool inv_normal)
+	{
+		origin = p0;	//origin is located in one corner, not in the center of the quad
+		v1 = p1 - p0;
+		v2 = p2 - p0;
+		Vector3 aux = p2 + v1;
+		if (p3 != aux)
+		{
+			cerr << "ERROR: Incorrect quad dimensions! Errors might happen during execution" << endl;
+		}
+		this->mat = mat;
+		n = cross(v1, v2);
+		n.normalize();
+		if (inv_normal)
+		{
+			n = n * -1.0f;
+		}
+		c = -dot(n, origin);
+		//TODO delete
 		cout << n.to_string() << endl;
 		cout << c << endl;
 		cout << v1.to_string() << endl;
@@ -51,7 +77,7 @@ public:
 	{
 		Vector3 intersection{ 0, 0, 0 };
 		float t = (-1.0f * (c + dot(o, n)) / dot(d, n));
-		if (t <= (float)_EPSILON)
+		if (t <= 0.0f)
 		{
 			intersects = false;
 			intersection = Vector3{0.0f, 0.0f, 0.0f};

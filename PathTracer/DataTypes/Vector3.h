@@ -21,7 +21,7 @@ typedef struct Vector3
 
 	void normalize()
 	{
-		float modulus = this->mod();
+		float modulus = abs(this->mod());
 		x = x / modulus;
 		y = y / modulus;
 		z = z / modulus;

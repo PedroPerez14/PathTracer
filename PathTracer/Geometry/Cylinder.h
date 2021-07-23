@@ -76,7 +76,7 @@ public:
 		float c = (o2 - origin2).mod() * (o2 - origin2).mod() - r * r;
 		float root = b * b - 4 * a * c;
 
-		if (root >= (float)_EPSILON)
+		if (root >= 0.0f)
 		{
 			float t_small = (-b - sqrt(root)) / (2 * a);
 			float t_big = (-b + sqrt(root)) / (2 * a);

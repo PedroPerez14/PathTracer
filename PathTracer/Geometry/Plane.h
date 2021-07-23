@@ -30,6 +30,24 @@ public:
 		this->mat = mat;
 	}
 
+	Plane(Vector3 origin, Vector3 v1, Vector3 v2, shared_ptr<Material> mat, bool inv_normal)
+	{
+		if (inv_normal)
+		{
+			n = cross(v1, v2) * -1.0f;
+		}
+		else
+		{
+			n = cross(v1, v2);
+		}
+		n.normalize();
+		c = abs(dot(n, origin));
+		this->v1 = v1;
+		this->v2 = v2;
+		this->origin = origin;
+		this->mat = mat;
+	}
+
 	void uv(Vector3 p, float& u, float& v) override
 	{
 		p = change_coord_system_point(p, v1, v2, cross(v1, v2), origin);
@@ -41,7 +59,7 @@ public:
 	{
 		Vector3 intersection;
 		float t = (-1.0f * (c + dot(o, n)) / dot(d, n));
-		if (t <= (float)_EPSILON)
+		if (t <= (float)0.0f)
 		{
 			intersects = false;
 			intersection = Vector3{ 0.0f, 0.0f, 0.0f };

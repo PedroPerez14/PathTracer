@@ -54,12 +54,12 @@ public:
 			float t_small = (-b - sqrtf(root)) / (2 * a);
 			float t_big = (-b + sqrtf(root)) / (2 * a);
 
-			if (t_small >= (float)_EPSILON)
+			if (t_small >= 0.0f)
 			{
 				intersects = true;
 				intersection = o + (d * t_small);
 			}
-			else if (t_big >= (float)_EPSILON)
+			else if (t_big >= 0.0f)
 			{
 				intersects = true;
 				intersection = o + (d * t_big);

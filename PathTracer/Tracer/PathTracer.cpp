@@ -166,8 +166,8 @@ void PathTracer::trace_pixel(std::shared_ptr<Image>& img, int nworker)
                     }
                     else
                     {
-                        rr_event = russian_roulette(closest_shape, closest_intersect_point, w_o, acum, w_i, ray_on_air);  //TODO
-                        contr_lp = contr_lp + (get_point_lights(closest_intersect_point, closest_shape, rr_event) * throughput * acum); //TODO
+                        rr_event = russian_roulette(closest_shape, closest_intersect_point, w_o, acum, w_i, ray_on_air);
+                        contr_lp = contr_lp + (get_point_lights(closest_intersect_point, closest_shape, rr_event, w_o) * throughput * acum);
                     }
                 }
                 else    //Path gets lost into the void
@@ -345,12 +345,12 @@ RR_event PathTracer::russian_roulette(const std::shared_ptr<Shape>& closest, con
     return rr;
 }
 
-Color PathTracer::get_point_lights(Vector3 p, std::shared_ptr<Shape> shape, const RR_event& event)
+Color PathTracer::get_point_lights(Vector3 p, std::shared_ptr<Shape> shape, const RR_event& event, Vector3 w_o)
 {
-    thread_local Vector3 dir, p_inter, pos_lp, n;
+    thread_local Vector3 dir, p_inter, pos_lp, n, p_aux, dir_aux;
     thread_local bool inter, aux, sampled;
     thread_local Color retval;
-    thread_local float dist, roulette, roulette_selector;
+    thread_local float dist, dist_aux, roulette, roulette_selector;
     if (event == dif)
     {
         retval = Color{ 0.0f, 0.0f, 0.0f };
@@ -368,19 +368,31 @@ Color PathTracer::get_point_lights(Vector3 p, std::shared_ptr<Shape> shape, cons
                 dir = pos_lp - p;
                 dist = abs(dir.mod());
                 Vector3 dir_norm = dir;
+                p_aux = p - (w_o * 10.0f * (float)_EPSILON);
+                dir_aux = pos_lp - p_aux;
+                dir_aux.normalize();
                 dir_norm.normalize();
                 for (const shared_ptr<Shape>& s : scene)
                 {
                     aux = false;
-                    if (s != shape)
-                    {
+                    //if (s != shape)
+                    //{
                         
                         p_inter = s->intersect(p, dir_norm, aux);
                         if (aux && (abs((p_inter - p).mod()) <= dist))
                         {
                             inter = true;
                         }
-                    }
+                        else
+                        {
+                            p_inter = shape->intersect(p_aux, dir_aux, aux);
+                            if (aux)   //additional check before sampling point lights
+                            {
+                                inter = true;
+                            }
+                        }
+                        
+                    //}
                 }
                 if (!inter)
                 {
