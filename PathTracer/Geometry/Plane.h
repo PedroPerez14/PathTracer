@@ -55,7 +55,7 @@ public:
 		v = p.y;
 	}
 
-	Vector3 intersect(const Vector3& o, const Vector3& d, bool& intersects) override
+	Vector3 intersect(Vector3 o, Vector3 d, bool& intersects) override
 	{
 		Vector3 intersection;
 		float t = (-1.0f * (c + dot(o, n)) / dot(d, n));

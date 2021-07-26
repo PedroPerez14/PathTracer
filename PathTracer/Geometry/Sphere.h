@@ -31,9 +31,9 @@ public:
 	{
 		Vector3 base_x = cross(center - ref_point, axis);
 		Vector3 base_y = axis;
-		Vector3 base_z = cross(base_x, axis);
 		base_x.normalize();
 		base_y.normalize();
+		Vector3 base_z = cross(base_x, axis);
 		base_z.normalize();
 		p = change_coord_system_point(p, base_x, base_y, base_z, center);
 		Vector3 c{ 0, 0, 0 };
@@ -41,25 +41,25 @@ public:
 		v = acos((p.y - c.y) / (p - c).mod());
 	}
 
-	Vector3 intersect(const Vector3& o, const Vector3& d, bool& intersects) override
+	Vector3 intersect(Vector3 o, Vector3 d, bool& intersects) override
 	{
 		Vector3 intersection{ 0, 0, 0 };
 		float a = d.mod() * d.mod();
-		float b = 2 * dot(d, o - center);
+		float b = 2 * dot(d, (o - center));
 		float c = (o - center).mod() * (o - center).mod() - r * r;
 		float root = b * b - 4 * a * c;
 
-		if (root >= 0.0f)
+		if (root >= 0)
 		{
 			float t_small = (-b - sqrtf(root)) / (2 * a);
 			float t_big = (-b + sqrtf(root)) / (2 * a);
 
-			if (t_small >= 0.0f)
+			if (t_small >= (float)_EPSILON)
 			{
 				intersects = true;
 				intersection = o + (d * t_small);
 			}
-			else if (t_big >= 0.0f)
+			else if (t_big >= (float)_EPSILON)
 			{
 				intersects = true;
 				intersection = o + (d * t_big);
@@ -113,6 +113,8 @@ public:
 			n2 = n_env;
 			n = n * -1.0f;
 		}
+		//cout << "n1: " << n1 << endl;
+		//cout << "n2: " << n2 << endl;
 		float mu = n1 / n2;
 		float cos_th_entr = dot(w_o * -1.0f, n);
 		float sin_th_t_2 = mu * mu * (1.0f - (cos_th_entr * cos_th_entr));
@@ -142,8 +144,9 @@ public:
 			n = n * -1.0f;
 		}
 		float mu = n1 / n2;
-		float cos_th_entr = dot(w_entr * -1.0f, n);
+		float cos_th_entr = dot((w_entr * -1.0f) , n);
 		float sin_th_t_2 = mu * mu * (1.0f - (cos_th_entr * cos_th_entr));
+		ray_through_air = !ray_through_air;
 		return w_entr * mu + n * (mu * cos_th_entr - sqrtf(1.0f - sin_th_t_2));
 	}
 };

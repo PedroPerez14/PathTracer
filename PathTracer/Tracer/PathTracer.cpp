@@ -13,6 +13,7 @@ PathTracer::PathTracer(int width, int height, int paths_per_pixel, int n_threads
     this->height = height;
     this->paths_per_pixel = paths_per_pixel;
     this->n_threads = n_threads;
+    n_environment = fresnel_coef[air];
 
     cam = create_camera(Vector3{ 0.001f, 0.0f, 0.0f }, width, height, (float)_FOV_H);
     workQueue = new ConcurrentBoundedQueue<int>(width * height);
@@ -34,6 +35,11 @@ PathTracer::PathTracer(int width, int height, int paths_per_pixel, Vector3& cam_
 
     mt = std::mt19937(std::random_device()());
     dist = std::uniform_real_distribution<float>(0.0f, 1.0f);
+}
+
+void PathTracer::set_fov(float fov)
+{
+    cam = create_camera(Vector3{ 0.001f, 0.0f, 0.0f }, width, height, fov);
 }
 
 void PathTracer::add_shape(std::shared_ptr<Shape> s)
@@ -125,7 +131,7 @@ void PathTracer::trace_pixel(std::shared_ptr<Image>& img, int nworker)
             last_shape_hit = nullptr;
             n_bounces = 0;
             rr_event = RR_event::dif;
-
+            //cout << "---------------------" << endl;
             //Start bouncing the path
             while (!stop && rr_event != RR_event::absorb)
             {
@@ -142,7 +148,7 @@ void PathTracer::trace_pixel(std::shared_ptr<Image>& img, int nworker)
                         }
                         else    //Avoid surface acne in case the ray is bouncing inside a shape
                         {
-                            intersect_point = s->intersect(path_point + (w_o * (float)_EPSILON), w_o, inter);
+                            intersect_point = s->intersect(path_point + (w_o * _SURFACEACNEDISPLACEMENT), w_o, inter);
                         }
                         if (inter)
                         {
@@ -155,6 +161,28 @@ void PathTracer::trace_pixel(std::shared_ptr<Image>& img, int nworker)
                             }
                         }
                     }
+                    /*
+                    if (s != last_shape_hit)
+                    {
+                        intersect_point = s->intersect(path_point, w_o, inter);
+                    }
+                    else
+                    {
+                        if (!ray_on_air)
+                        {
+                            intersect_point = s->intersect(path_point + (w_o * _surfaceacne), w_o, inter);
+                        }
+                    }
+                    if (inter)
+                    {
+                        d = abs((intersect_point - path_point).mod());
+                        if (d < min_distance)
+                        {
+                            closest_shape = s;
+                            min_distance = d;
+                            closest_intersect_point = intersect_point;
+                        }
+                    }*/
                 }
                 acum = Color{0.0f, 0.0f, 0.0f};
                 if (closest_shape)
@@ -178,8 +206,8 @@ void PathTracer::trace_pixel(std::shared_ptr<Image>& img, int nworker)
                 }
 
                 throughput = throughput * acum;
-                w_i.normalize();
                 w_o = w_i;
+                w_o.normalize();
                 path_point = closest_intersect_point;
                 last_shape_hit = closest_shape;
                 n_bounces++;    //Unused... yet (?) //TODO
@@ -313,6 +341,8 @@ RR_event PathTracer::russian_roulette(const std::shared_ptr<Shape>& closest, con
         }
         break;
     case dielectric:
+        //cout << "Viene en dir: " << w_o.to_string() << endl;
+        //cout << "Toca en: " << intersect_point.to_string() << endl;
         if (dot(w_o, n) > 0 && on_air)
         {
             n = n * -1.0f;
@@ -320,24 +350,32 @@ RR_event PathTracer::russian_roulette(const std::shared_ptr<Shape>& closest, con
         closest->fresnel(w_o, n, k_s, k_t, n_environment, on_air);
         ps = (max_px(k_s) / (max_px(k_s) + max_px(k_t))) * (float)_STOP_THRESHOLD;
         pt = (float)_STOP_THRESHOLD - ps;
+        //cout << "KS: " << k_s.to_string() << endl;
+        //cout << "KT: " << k_t.to_string() << endl;
+        //cout << "probs: " << ps << " " << pt << endl;
         roulette = randomfloat(0.0f, 1.0f);
         if (roulette <= ps)
         {
             w_i = specular_sampling(n, w_o, on_air);
             acum = (k_s / (ps / (float)_STOP_THRESHOLD));
             rr = spec;
+            //cout << "Reflejado a: " << w_i.to_string() << endl;
         }
         else if (roulette < (ps + pt))
         {
             w_i = closest->refract_ray(n, w_o, n_environment, on_air);
             acum = (k_t / (pt / (float)_STOP_THRESHOLD));
             rr = refract;
+            //cout << "Refractado a: " << w_i.to_string() << endl;
         }
         else    //Matar este path, contribución {0,0,0}
         {
             rr = absorb;
             acum = Color{ 0.0f, 0.0f, 0.0f };
+            //cout << "Absorbido" << endl;
         }
+        break;
+    case remix: //not implemented
         break;
     default:
         break;

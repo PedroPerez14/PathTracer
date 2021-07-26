@@ -19,7 +19,7 @@ protected:
 public:
 	Shape(){}
 
-	virtual Vector3 intersect(const Vector3& o, const Vector3& d, bool& intersects) = 0;
+	virtual Vector3 intersect(Vector3 o, Vector3 d, bool& intersects) = 0;
 
 	virtual Vector3 normal_at_point(const Vector3& p) = 0;
 

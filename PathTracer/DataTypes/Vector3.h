@@ -16,15 +16,15 @@ typedef struct Vector3
 
 	float mod() const 
 	{
-		return sqrtf(x * x + y * y + z * z);
+		return sqrtf(this->x * this->x + this->y * this->y + this->z * this->z);
 	}
 
 	void normalize()
 	{
-		float modulus = abs(this->mod());
-		x = x / modulus;
-		y = y / modulus;
-		z = z / modulus;
+		float modulus = this->mod();
+		this->x = this->x / modulus;
+		this->y = this->y / modulus;
+		this->z = this->z / modulus;
 	}
 
 	std::string to_string() const
@@ -44,12 +44,12 @@ typedef struct Vector3
 
 	Vector3 operator*(const float& scalar) const
 	{
-		return Vector3{ x * scalar, y * scalar, z * scalar };
+		return Vector3{ this->x * scalar, this->y * scalar, this->z * scalar };
 	}
 
     Vector3 operator/(const float& scalar) const
     {
-        return Vector3{ x / scalar, y / scalar, z / scalar };
+        return Vector3{ this->x / scalar, this->y / scalar, this->z / scalar };
     }
 
 	bool operator==(const Vector3& v) const

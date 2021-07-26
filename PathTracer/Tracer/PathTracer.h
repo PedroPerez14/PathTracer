@@ -34,6 +34,8 @@ public:
     PathTracer(int width, int height, int paths_per_pixel, int n_threads = 8);
     PathTracer(int width, int height, int paths_per_pixel, Vector3& cam_pos, int n_threads = 0, dielec_type env = air);
 
+    void set_fov(float fov);
+
     void add_shape(std::shared_ptr<Shape> s);
     void add_point_light(std::shared_ptr<PointLight> pl);
     std::shared_ptr<Image> trace();

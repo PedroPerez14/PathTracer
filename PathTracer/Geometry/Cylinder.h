@@ -62,7 +62,7 @@ public:
 		v = p.z;
 	}
 
-	Vector3 intersect(const Vector3& o, const Vector3& d, bool& intersects) override
+	Vector3 intersect(Vector3 o, Vector3 d, bool& intersects) override
 	{
 		Vector3 intersection{ 0, 0, 0 };
 		Vector3 o2 = change_coord_system_point(o, dir1, dir2, axis);
