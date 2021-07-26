@@ -65,9 +65,9 @@ std::shared_ptr<Material> create_specular_material()   //Non-textured
 }
 
 //Dielectrics
-std::shared_ptr<Material> create_dielectric_material(const enum dielec_type& type)
+std::shared_ptr<Material> create_dielectric_material(const dielec_type& type)
 {
     //We don't need k_s nor k_t, since we'll calculate them through fresnel
-    Material mat{ dielectric, type, Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, false, nullptr, 1.0f };
+    Material mat{ mat_type::dielectric, fresnel_coef[type], Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, Color{ 0, 0, 0 }, false, nullptr, 1.0f };
     return std::make_shared<Material>(mat);
 }

@@ -34,20 +34,23 @@ int main(int argc, char* argv[])
         int n_threads = std::stoi(argv[4]);*/
         int w = 1920;
         int h = 1080;
-        int paths_per_pixel = 50;
-        int n_threads = 12;
+        int paths_per_pixel = 20;
+        int n_threads = 11;
         pt = new PathTracer(w, h, paths_per_pixel, n_threads);
         
         ///------------CHOOSE A CORNELL BOX SCENE TO RENDER-------///
-        //TODO definir las funciones en PathTracer.h
+        //                            UNUSED
         //cornell_box_morada(rt);
         //cornell_box_plano(rt);
         //cornell_box_rv(rt);
-        white_cornell_box(pt);
         //cornell_box_tierra_emisora(rt);
         //cornell_box_cuadrado(rt);
         //espacio(rt);
-        ///--------------------------------------------------------///
+        //  ------------------------------------------------------//
+        //standard_cornell_box(pt);
+        //white_cornell_box(pt);
+        doom_cornell_box(pt);
+        ///-------------------------------------------------------///
 
         auto start = chrono::system_clock::now();
         std::shared_ptr<Image> result = pt->trace();

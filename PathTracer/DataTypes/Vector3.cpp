@@ -24,7 +24,9 @@ float angle(const Vector3& v1, const Vector3& v2)
 
 float max_px(const Color& color)
 {
-    return std::max(std::max(color.r, color.g), color.b);
+    float max = (color.r < color.g) ? color.g : color.r;
+    return ((max < color.b) ? color.b : max);
+    //return std::max(std::max(color.r, color.g), color.b);
 }
 
 // Color space transition functions //
