@@ -29,8 +29,8 @@ struct Texture
 
 	Color get_texel(const float& u, const float& v) const
 	{
-		int width_ret = abs(fmod((u - u_left) / (u_right - u_left), 1)) * width;
-		int height_ret = abs(fmod((v - v_up) / (v_down - v_up), 1)) * height;
+		int width_ret = abs(fmod((float)(u - u_left) / (float)(u_right - u_left), 1)) * width;
+		int height_ret = abs(fmod((float)(v - v_up) / (float)(v_down - v_up), 1)) * height;
 		return texels[width_ret + height_ret * width];
 	}
 };

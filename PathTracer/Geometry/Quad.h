@@ -10,7 +10,6 @@
 class Quad : public Shape
 {
 private:
-	float c;
 	Vector3 n;
 	Vector3 v1;
 	Vector3 v2;
@@ -31,13 +30,11 @@ public:
 		this->mat = mat;
 		n = cross(v1, v2);
 		n.normalize();
-		c = -dot(n, origin);
-		//TODO delete
-		cout << n.to_string() << endl;
-		cout << c << endl;
-		cout << v1.to_string() << endl;
-		cout << v2.to_string() << endl;
-		cout << "--------------------------" << endl;
+		
+		//cout << n.to_string() << endl;
+		//cout << v1.to_string() << endl;
+		//cout << v2.to_string() << endl;
+		//cout << "--------------------------" << endl;
 	}
 
 	Quad(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, shared_ptr<Material> mat, bool inv_normal)
@@ -57,18 +54,15 @@ public:
 		{
 			n = n * -1.0f;
 		}
-		c = -dot(n, origin);
-		//TODO delete
-		cout << n.to_string() << endl;
-		cout << c << endl;
-		cout << v1.to_string() << endl;
-		cout << v2.to_string() << endl;
-		cout << "--------------------------" << endl;
 	}
 
 	void uv(Vector3 p, float& u, float& v) override
 	{
-		p = change_coord_system_point(p, v1, v2, cross(v1, v2), origin); //TODO normalize???
+		Vector3 v1norm = v1;
+		v1norm.normalize();
+		Vector3 v2norm = v2;
+		v2norm.normalize();
+		p = change_coord_system_point(p, v1norm, v2norm, n, origin);
 		u = p.x;
 		v = p.y;
 	}
@@ -76,7 +70,11 @@ public:
 	Vector3 intersect(Vector3 o, Vector3 d, bool& intersects) override
 	{
 		Vector3 intersection{ 0, 0, 0 };
-		float t = (-1.0f * (c + dot(o, n)) / dot(d, n));
+		//float t = (-1.0f * (c + dot(o, n)) / dot(d, n));	// c ?????
+		//Confía en tu compañero de grupo y te joderá el cuatri por vago,
+		//	y lo poco que programa lo hace muy raro y de calidad cuestionable 
+		//		tisho si lees esto me debes medio verano y la reparación del portátil pero ambos sabemos que eso no va a pasar porque tienes la cara de hormigón armado
+		float t = -1.0f * dot(n, (o - origin)) / dot(d, n);
 		if (t <= 0.0f)
 		{
 			intersects = false;
@@ -86,8 +84,9 @@ public:
 		{
 			intersection = Vector3{ o.x + d.x * t, o.y + d.y * t, o.z + d.z * t };
 			float u, v;
-			uv(intersection, u, v);
-			intersects = (u < 1 && u > 0 && v < 1 && v > 0);
+			u = dot(cross(v2, d * -1.0f), (o - origin)) / dot(d * -1.0f, cross(v1, v2));
+			v = dot(cross(d * -1.0f, v1), (o - origin)) / dot(d * -1.0f, cross(v1, v2));
+			intersects = (u <= 1.0f && u >= 0.0f && v <= 1.0f && v >= 0.0f);
 		}
 		return intersection;
 	}
@@ -99,12 +98,16 @@ public:
 
 	Vector3 long_tan(const Vector3& surface_point) override
 	{
-		return v1;
+		Vector3 v1norm = v1;
+		v1norm.normalize();
+		return v1norm;
 	}
 
 	Vector3 lat_tan(const Vector3& surface_point) override
 	{
-		return v2;
+		Vector3 v2norm = v2;
+		v2norm.normalize();
+		return v2norm;
 	}
 
 	void fresnel(Vector3 w_o, Vector3 n, Color& k_s, Color& k_t, const float& n_env, const bool& ray_through_air) override

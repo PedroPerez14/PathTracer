@@ -116,12 +116,12 @@ public:
 				Plane plane1 = Plane(origin + (axis * height), dir1, dir2, create_specular_material());
 				Vector3 p2 = plane1.intersect(o, d, intersects_2);
 				Vector3 dist = p2 - (origin + axis * height);
-				intersects_2 = intersects_2 && dist.mod() < r;
+				intersects_2 = intersects_2 && dist.mod() <= r;
 				bool intersects_3;
 				Plane plane2 = Plane(origin, dir1, dir2, create_specular_material());
 				Vector3 p3 = plane2.intersect(o, d, intersects_3);
 				dist = p3 - origin;
-				intersects_3 = intersects_3 && dist.mod() < r;
+				intersects_3 = intersects_3 && dist.mod() <= r;
 
 				if (intersects_2 && !intersects_3)
 				{
@@ -136,8 +136,8 @@ public:
 				else if (intersects_2 && intersects_3)
 				{
 					intersects = true;
-					Vector3 dist_p2 = origin - p2;
-					Vector3 dist_p3 = origin - p3;
+					Vector3 dist_p2 = p2 - o;
+					Vector3 dist_p3 = p3 - o;
 					if (dist_p3.mod() > dist_p2.mod())
 					{
 						intersection = p2;
@@ -146,6 +146,10 @@ public:
 					{
 						intersection = p3;
 					}
+				}
+				else
+				{
+					intersects = false;
 				}
 			}
 		}

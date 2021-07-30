@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
         int n_threads = std::stoi(argv[4]);*/
         int w = 1920;
         int h = 1080;
-        int paths_per_pixel = 20;
+        int paths_per_pixel = 50;
         int n_threads = 11;
         pt = new PathTracer(w, h, paths_per_pixel, n_threads);
         
@@ -49,7 +49,8 @@ int main(int argc, char* argv[])
         //  ------------------------------------------------------//
         //standard_cornell_box(pt);
         //white_cornell_box(pt);
-        doom_cornell_box(pt);
+        mario_cornell_box(pt);
+        //doom_cornell_box(pt);
         ///-------------------------------------------------------///
 
         auto start = chrono::system_clock::now();
