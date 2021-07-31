@@ -24,12 +24,13 @@ public:
 		this->r = r;
 		this->mat = mat;
 		axis = Vector3{ 0.0f, 2 * r, 0.0f };
+		axis.normalize();
 		ref_point = Vector3{ center.x, center.y, center.z + r };
 	}
 
 	void uv(Vector3 p, float& u, float& v) override
 	{
-		Vector3 base_x = cross(center - ref_point, axis);
+		Vector3 base_x = cross(ref_point - center, axis);
 		Vector3 base_y = axis;
 		base_x.normalize();
 		base_y.normalize();

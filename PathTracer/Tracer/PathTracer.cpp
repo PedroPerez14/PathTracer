@@ -261,7 +261,7 @@ RR_event PathTracer::russian_roulette(const std::shared_ptr<Shape>& closest, con
         break;
     case dif_spec:
         k_d = closest->get_color(intersect_point);
-        k_s = closest->get_mat()->k_s;  // /255.0f
+        k_s = closest->get_mat()->k_s;
         pd = (max_px(k_d) / (max_px(k_d) + max_px(k_s))) * (float)_STOP_THRESHOLD;
         ps = (float)_STOP_THRESHOLD - pd;
         roulette = randomfloat(0.0f, 1.0f);
@@ -406,7 +406,7 @@ Color PathTracer::get_point_lights(Vector3 p, std::shared_ptr<Shape> shape, cons
                 dir = pos_lp - p;
                 dist = abs(dir.mod());
                 Vector3 dir_norm = dir;
-                p_aux = p - (w_o * 10.0f * (float)_EPSILON);
+                p_aux = p - (w_o * (float)_SURFACEACNEDISPLACEMENT);
                 dir_aux = pos_lp - p_aux;
                 dir_aux.normalize();
                 dir_norm.normalize();
@@ -424,10 +424,7 @@ Color PathTracer::get_point_lights(Vector3 p, std::shared_ptr<Shape> shape, cons
                         else
                         {
                             p_inter = shape->intersect(p_aux, dir_aux, aux);
-                            if (aux)   //additional check before sampling point lights
-                            {
-                                inter = true;
-                            }
+                            inter = aux;
                         }
                         
                     //}

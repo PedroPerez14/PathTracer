@@ -12,6 +12,58 @@
 #include "../Geometry/Plane.h"
 #include "../Geometry/Sphere.h"
 
+void specular_cornell_box(PathTracer* im)
+{
+    im->set_fov(60.0f);
+    ///Luces puntuales
+
+    ///Textures
+
+    ///Materials
+    shared_ptr<Material> mat_pared_tex = create_diffuse_material(Color{ 0.8f, 0.8f, 0.8f });
+    shared_ptr<Material> mat_pared_der = create_diffuse_material(Color{ 0.039f, 1.0f, 0.039f });
+    shared_ptr<Material> mat_pared_izq = create_diffuse_material(Color{ 1.0f, 0.039f, 0.039f });
+    shared_ptr<Material> mat_specular = create_specular_material(); //Color(20, 20, 20)
+    shared_ptr<Material> mat_techo_emisor = create_emitting_material(Color{ 3.0f, 3.0f, 3.0f });                            //AREA LIGHT
+
+    ///Shapes
+    //Cornell Box
+    shared_ptr<Shape> pared(new Plane(Vector3{ 85, 0, 0 }, Vector3{ 0, -1, 0 }, Vector3{ 0, 0, 1 }, mat_pared_tex));
+    shared_ptr<Shape> pared_izq(new Plane(Vector3{ 0, 0, -25 }, Vector3{ 1, 0, 0 }, Vector3{ 0, 1, 0 }, mat_pared_izq));
+    shared_ptr<Shape> pared_der(new Plane(Vector3{ 0, 0, 25 }, Vector3{ -1, 0, 0 }, Vector3{ 0, 1, 0 }, mat_pared_der));
+    shared_ptr<Shape> suelo(new Plane(Vector3{ 0, -25, 0 }, Vector3{ 0, 0, 1 }, Vector3{ 1, 0, 0 }, mat_pared_tex));
+    shared_ptr<Shape> techo(new Plane(Vector3{ 0, 25.5, 0 }, Vector3{ -1, 0, 0 }, Vector3{ 0, 0, -1 }, mat_techo_emisor));
+    shared_ptr<Shape> pared_detras(new Plane(Vector3{ -0.1f, 0, 0 }, Vector3{ 0, 0, 1 }, Vector3{ 0, -1, 0 }, mat_pared_tex));
+    //Quads
+    shared_ptr<Shape> techo_iz(new Quad(Vector3{ 85, 25, -25 }, Vector3{ 85, 25, -10 }, Vector3{ 0, 25, -25 }, Vector3{ 0, 25, -10 }, mat_pared_tex));
+    shared_ptr<Shape> techo_der(new Quad(Vector3{ 85, 25, 10 }, Vector3{ 85, 25, 25 }, Vector3{ 0, 25, 10 }, Vector3{ 0, 25, 25 }, mat_pared_tex));
+    shared_ptr<Shape> techo_cerca(new Quad(Vector3{ 15, 25, -10 }, Vector3{ 15, 25, 10 }, Vector3{ 0, 25, -10 }, Vector3{ 0, 25, 10 }, mat_pared_tex));
+    shared_ptr<Shape> techo_fondo(new Quad(Vector3{ 85, 25, -10 }, Vector3{ 85, 25, 10 }, Vector3{ 70, 25, -10 }, Vector3{ 70, 25, 10 }, mat_pared_tex));
+
+    //Spheres
+    shared_ptr<Shape> esf1(new Sphere(Vector3{ 60, -15, 7.75 }, 7.5f, mat_specular));
+
+    //Cylinder de prueba
+    shared_ptr<Shape> cil_finito(new Cylinder(Vector3{ 60, -25, -7.75 }, Vector3{ 0, 1, 0 }, 7.5f, 35.0f, mat_specular));
+
+    ///Añadir Shapes a la escena
+
+    im->add_shape(pared_izq);
+    im->add_shape(pared_der);
+    im->add_shape(pared);
+    im->add_shape(pared_detras);
+    im->add_shape(suelo);
+    im->add_shape(techo);
+    im->add_shape(techo_iz);
+    im->add_shape(techo_der);
+    im->add_shape(techo_fondo);
+    im->add_shape(techo_cerca);
+
+    im->add_shape(cil_finito);
+    im->add_shape(esf1);
+
+}
+
 void mario_cornell_box(PathTracer* im)
 {
     im->set_fov(60.0f);
@@ -115,20 +167,23 @@ void white_cornell_box(PathTracer* im)
     shared_ptr<PointLight> lp_central(new PointLight{ Vector3{ 42.5, 15.0f, 0 }, Color{ 19.607f, 19.607f, 19.607f } });     //POINT LIGHT
 
     ///Textures
-
+    shared_ptr<Texture> hemisphere_tex = read_tex_from_file("../../../../PathTracer/Textures/hemiesfera.ppm", 0, 31.50f, 0.0f, 17.90f);
+    shared_ptr<Texture> tierra_tex_esf = read_tex_from_file("../../../../PathTracer/Textures/Tierra_Tex.ppm", -M_PI, M_PI, 0, M_PI);
     ///Materials
     shared_ptr<Material> mat_pared_tex = create_diffuse_material(Color{ 0.8f, 0.8f, 0.8f });
     shared_ptr<Material> mat_pared_der = create_diffuse_material(Color{ 0.039f, 1.0f, 0.039f });
     shared_ptr<Material> mat_pared_izq = create_diffuse_material(Color{ 1.0f, 0.039f, 0.039f });
     shared_ptr<Material> mat_Sphere1 = create_diffuse_material(Color{ 0.784f, 0.490f, 0.490f });
     shared_ptr<Material> mat_Sphere1_b = create_specular_material(); //Color(20, 20, 20)
-    shared_ptr<Material> mat_techo_emisor = create_emitting_material(Color{ 3.0f, 3.0f, 3.0f });                            //AREA LIGHT
+    shared_ptr<Material> mat_techo_emisor = create_emitting_material(Color{ 1.0f, 1.0f, 1.0f });                        //AREA LIGHT
+    shared_ptr<Material> mat_tierra_emisora = create_emitting_material(tierra_tex_esf, 1.0f);                           //AREA LIGHT
     shared_ptr<Material> mat_techo_oscuro = create_diffuse_material(Color{ 0.294f, 0.294f, 0.294f });
     shared_ptr<Material> mat_amarillo_dif = create_diffuse_material(Color{ 0.784f, 0.705f, 0.078f });
     shared_ptr<Material> mat_Sphere3 = create_dielectric_material(cristal_1);
     shared_ptr<Material> mat_Cylinder = create_dielectric_material(cristal_1);
 
     shared_ptr<Material> mat_chicle = create_plastic_material(Color{ 1.0f, 0.450f, 0.862f }, Color{ 0.5f, 0.5f, 0.5f });
+    shared_ptr<Material> mat_hemiesfera = create_diffuse_material(hemisphere_tex);
     shared_ptr<Material> mat_chicle_fresnel = create_plastic_material_fresnel(Color{ 1.0f, 0.450f, 0.862f });
     shared_ptr<Material> mat_chicle_semidif = create_plastic_material(Color{ 1.0f, 0.450f, 0.862f }, Color{ 0.039f, 0.039f, 0.039f });
     shared_ptr<Material> mat_chicle_dif = create_diffuse_material(Color{ 1.0f, 0.450f, 0.862f });
@@ -136,11 +191,11 @@ void white_cornell_box(PathTracer* im)
 
     ///Shapes
     //Cornell Box
-    shared_ptr<Shape> pared(new Plane(Vector3{ 85, 0, 0 }, Vector3{ 0, -1, 0 }, Vector3{ 0, 0, 1 }, mat_pared_tex));
+    shared_ptr<Shape> pared(new Plane(Vector3{ 85, 0, 0 }, Vector3{ 0, 0, 1 }, Vector3{ 0, -1, 0 }, mat_pared_tex, true));
     shared_ptr<Shape> pared_izq(new Plane(Vector3{ 0, 0, -25 }, Vector3{ 1, 0, 0 }, Vector3{ 0, 1, 0 }, mat_pared_izq));
     shared_ptr<Shape> pared_der(new Plane(Vector3{ 0, 0, 25 }, Vector3{ -1, 0, 0 }, Vector3{0, 1, 0}, mat_pared_der));
     shared_ptr<Shape> suelo(new Plane(Vector3{ 0, -25, 0 }, Vector3{ 0, 0, 1 }, Vector3{1, 0, 0}, mat_pared_tex));
-    shared_ptr<Shape> techo(new Plane(Vector3{ 0, 25.5, 0 }, Vector3{ -1, 0, 0 }, Vector3{ 0, 0, -1 }, mat_techo_emisor));
+    shared_ptr<Shape> techo(new Plane(Vector3{ 0, 25.5, 0 }, Vector3{ -1, 0, 0 }, Vector3{ 0, 0, -1 }, mat_pared_tex));
     shared_ptr<Shape> pared_detras(new Plane(Vector3{ -0.1f, 0, 0 }, Vector3{0, 0, 1}, Vector3{0, -1, 0}, mat_pared_tex));
     //Quads
     shared_ptr<Shape> techo_iz(new Quad(Vector3{ 85, 25, -25 }, Vector3{ 85, 25, -10 }, Vector3{ 0, 25, -25 }, Vector3{ 0, 25, -10 }, mat_pared_tex));
@@ -149,10 +204,10 @@ void white_cornell_box(PathTracer* im)
     shared_ptr<Shape> techo_fondo(new Quad(Vector3{ 85, 25, -10 }, Vector3{ 85, 25, 10 }, Vector3{ 70, 25, -10 }, Vector3{ 70, 25, 10 }, mat_pared_tex));
     //Spheres
     shared_ptr<Shape> esf1(new Sphere(Vector3{ 60, 10, -15 }, 7.5, mat_chicle_semidif));
-    shared_ptr<Shape> esf2(new Sphere(Vector3{ 60, 10, 0 }, 7.5, mat_chicle_dif));
+    shared_ptr<Shape> esf2(new Sphere(Vector3{ 60, 12.5, 0 }, 10.0f, mat_Sphere3));
     shared_ptr<Shape> esf3(new Sphere(Vector3{ 60, 10, 15 }, 7.5, mat_chicle_reflejo_azul));
-    shared_ptr<Shape> esf4(new Sphere(Vector3{ 60, -5, -7.5 }, 7.5, mat_chicle));
-    shared_ptr<Shape> esf5(new Sphere(Vector3{ 60, -5, 7.5 }, 7.5, mat_chicle_fresnel));
+    shared_ptr<Shape> esf4(new Sphere(Vector3{ 60, -5, -7.5 }, 7.5, mat_Sphere1_b));
+    shared_ptr<Shape> esf5(new Sphere(Vector3{ 60, -5, 10.0 }, 9.0f, mat_tierra_emisora));
     //Cylinder de prueba
     shared_ptr<Shape> cil_finito(new Cylinder(Vector3{ 50, -25, -20 }, Vector3{ 0, 1, 0 }, 7.5, 50.0f, mat_Cylinder));
 
@@ -161,24 +216,24 @@ void white_cornell_box(PathTracer* im)
 
     ///Añadir Shapes a la escena
     //im->add_shape(esf1);
-    //im->add_shape(esf2);
+    im->add_shape(esf2);
     //im->add_shape(esf3);
-    //im->add_shape(esf4);
-    //im->add_shape(esf5);
+    im->add_shape(esf4);
+    im->add_shape(esf5);
     im->add_shape(pared_izq);
     im->add_shape(pared_der);
     im->add_shape(pared);
     im->add_shape(pared_detras);
     im->add_shape(suelo);
     im->add_shape(techo);
-    im->add_shape(techo_iz);
+    /*im->add_shape(techo_iz);
     im->add_shape(techo_der);
     im->add_shape(techo_fondo);
-    im->add_shape(techo_cerca);
-    im->add_shape(cil_finito);
+    im->add_shape(techo_cerca);*/
+    //im->add_shape(cil_finito);
 
-    im->add_shape(cil1);
-    im->add_shape(cil2);
+    //im->add_shape(cil1);
+    //im->add_shape(cil2);
 
     ///Añadir luces puntuales a la escena
     //im->add_point_light(lp_central);
@@ -192,8 +247,8 @@ void standard_cornell_box(PathTracer* im)
     shared_ptr<Material> mat_pared_doom = create_emitting_material(pared_doom, 0.75f);
 
     ///Luces puntuales
-    shared_ptr<PointLight> lp_amarilla(new PointLight{ Color{ 10.0f, 10.0f, 1.0f }, Vector3{ 60, -24.5, 24.5 } });         //POINT LIGHT
-    shared_ptr<PointLight> lp_central(new PointLight{ Vector3{ 42.5, 15.0f, 0 }, Color{ 19.607f, 19.607f, 19.607f } });     //POINT LIGHT
+    shared_ptr<PointLight> lp_amarilla(new PointLight{ Color{ 3.9f, 100.0f, 3.9f }, Vector3{ 60, 0, 20 } });             //POINT LIGHT
+    shared_ptr<PointLight> lp_central(new PointLight{ Color{ 100.0f, 3.9f, 3.9f }, Vector3{ 60, 0, -20 } });     //POINT LIGHT
 
     ///Textures
 
@@ -224,7 +279,7 @@ void standard_cornell_box(PathTracer* im)
 
     //Quads
     shared_ptr<Shape> techo_iz(new Quad(Vector3{ 85, 25, -25 }, Vector3{ 85, 25, -10 }, Vector3{ 0, 25, -25 }, Vector3{ 0, 25, -10 }, mat_pared_tex));
-    shared_ptr<Shape> techo_der(new Quad(Vector3{ 85, 25, 10 }, Vector3{ 85, 25, 25 }, Vector3{ 0, 25, 10 }, Vector3{ 0, 25, 25 }, mat_techo_emisor));
+    shared_ptr<Shape> techo_der(new Quad(Vector3{ 85, 25, 10 }, Vector3{ 85, 25, 25 }, Vector3{ 0, 25, 10 }, Vector3{ 0, 25, 25 }, mat_pared_tex));
     shared_ptr<Shape> techo_cerca(new Quad(Vector3{ 15, 25, -10 }, Vector3{ 15, 25, 10 }, Vector3{ 0, 25, -10 }, Vector3{ 0, 25, 10 }, mat_pared_tex));
     shared_ptr<Shape> techo_fondo(new Quad(Vector3{ 85, 25, -10 }, Vector3{ 85, 25, 10 }, Vector3{ 70, 25, -10 }, Vector3{ 70, 25, 10 }, mat_pared_tex));
 
@@ -246,8 +301,8 @@ void standard_cornell_box(PathTracer* im)
     shared_ptr<Shape> cil2(new Cylinder{ Vector3{ 65, -25.0, 0.5 }, Vector3{ 0.5f, 1.0f, 1.0f}, 5.0, 25.0f, mat_amarillo_dif });
 
     ///Añadir Shapes a la escena
-    //im->add_shape(esf1);
-    //im->add_shape(esf2);
+    im->add_shape(esf1);
+    im->add_shape(esf2);
 
     im->add_shape(pared_izq);
     im->add_shape(pared_der);
@@ -260,19 +315,19 @@ void standard_cornell_box(PathTracer* im)
     im->add_shape(techo_fondo);
     im->add_shape(techo_cerca);
 
-    im->add_shape(quad);
-    im->add_shape(quad2);
-    im->add_shape(quad3);
-    im->add_shape(quad4);
-    im->add_shape(quad5);
+    //im->add_shape(quad);
+    //im->add_shape(quad2);
+    //im->add_shape(quad3);
+    //im->add_shape(quad4);
+    //im->add_shape(quad5);
 
     //im->add_shape(cil_finito);
     //im->add_shape(cil1);
     //im->add_shape(cil2);
 
     ///Añadir luces puntuales a la escena
-    //im->add_point_light(lp_central);
-    //im->add_point_light(lp_amarilla);
+    im->add_point_light(lp_central);
+    im->add_point_light(lp_amarilla);
 }
 
 void doom_cornell_box(PathTracer* im)
@@ -280,10 +335,11 @@ void doom_cornell_box(PathTracer* im)
     im->set_fov(45.0f);
     ///Luces puntuales
     shared_ptr<PointLight> lp_amarilla(new PointLight{ Vector3{ 60, -24.5, 24.5 }, Color{ 1.0f, 1.0f, 1.0f } });                 //POINT LIGHT
-    shared_ptr<PointLight> lp_central(new PointLight{ Color{ 1.0f, 1.0, 1.0 },  Vector3{ 268.0f, 30.0f, 0.0f } });               //POINT LIGHT
+    shared_ptr<PointLight> lp_central(new PointLight{ Color{ 3000.0f, 3000.0, 3000.0 },  Vector3{ 300.0f, 20.0f, 0.0f } });               //POINT LIGHT
+    shared_ptr<PointLight> lp_central2(new PointLight{ Color{ 3000.0f, 3000.0, 3000.0 },  Vector3{ 600.0f, -5.0f, 0.0f } });               //POINT LIGHT
 
     ///Textures
-    shared_ptr<Texture> comp_doom = read_tex_from_file("../../../../PathTracer/Textures/comp_doom.ppm", -25.0f, 25.0f, 25.5f, -25.0f);
+    shared_ptr<Texture> comp_doom = read_tex_from_file("../../../../PathTracer/Textures/comp_doom.ppm", 0.0f, 470.0f, 0.0f, 50.0f);
     shared_ptr<Texture> columna_doom = read_tex_from_file("../../../../PathTracer/Textures/columna_doom.ppm", -25.0f, 25.0f, 25.5f, -25.0f);
     shared_ptr<Texture> pared_doom = read_tex_from_file("../../../../PathTracer/Textures/pared_doom.ppm", -25.0f, 25.0f, 25.5f, -25.0f);
     shared_ptr<Texture> suelo_doom = read_tex_from_file("../../../../PathTracer/Textures/suelo_doom.ppm", -25.0f, 25.0f, 25.5f, -25.0f);
@@ -296,7 +352,7 @@ void doom_cornell_box(PathTracer* im)
     
     ///Materials
     shared_ptr<Material> mat_comp_doom = create_diffuse_material(comp_doom);
-    shared_ptr<Material> mat_pared_doom = create_emitting_material(pared_doom, 0.8f);
+    shared_ptr<Material> mat_pared_doom = create_diffuse_material(pared_doom);
     shared_ptr<Material> mat_columna_doom = create_diffuse_material(columna_doom);
     shared_ptr<Material> mat_suelo_doom = create_diffuse_material(blue_flat_doom);
     shared_ptr<Material> mat_suelo_doom2 = create_diffuse_material(suelo_doom);
@@ -311,7 +367,7 @@ void doom_cornell_box(PathTracer* im)
     shared_ptr<Material> mat_pared_izq = create_diffuse_material(Color{ 1.0f, 0.039f, 0.039f });
     shared_ptr<Material> mat_Sphere1 = create_diffuse_material(Color{ 0.784f, 0.490f, 0.490f });
     shared_ptr<Material> mat_Sphere1_b = create_specular_material(); //Color(20, 20, 20)
-    shared_ptr<Material> mat_techo_emisor = create_emitting_material(Color{ 1.75f, 1.75f, 1.0f });                            //AREA LIGHT
+    shared_ptr<Material> mat_techo_emisor = create_emitting_material(Color{ 2.5f, 2.5f, 2.0f });                            //AREA LIGHT
     shared_ptr<Material> mat_techo_oscuro = create_diffuse_material(Color{ 0.294f, 0.294f, 0.294f });
     shared_ptr<Material> mat_amarillo_dif = create_diffuse_material(Color{ 0.784f, 0.705f, 0.078f });
     shared_ptr<Material> mat_Sphere3 = create_dielectric_material(cristal_1);
@@ -479,5 +535,6 @@ void doom_cornell_box(PathTracer* im)
 
     ///Añadir luces puntuales a la escena
     im->add_point_light(lp_central);
+    im->add_point_light(lp_central2);
     //im->add_point_light(lp_amarilla);
 }
