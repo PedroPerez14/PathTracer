@@ -124,10 +124,10 @@ typedef struct Vector3
 		b = (b_scaled * (1 + (b_scaled / (img_MAX * img_MAX)))) / (1 + b_scaled);
 	}
 
-	void reinhard_global(const float& l_avg, const float& img_MAX, const float a) {
+	float reinhard_global(const float& l_avg, const float& Lwhite, const float a) {
 		// Erik Reinhard, 2002
-		float l_scaled = (float)(r * (float)(a / l_avg));
-		this->r = (float)((float)l_scaled * (float)(1.0f + (float)(l_scaled / (float)(img_MAX * img_MAX)))) / (float)(1.0f + l_scaled);
+		float l_scaled = (float)(g * (float)(a / l_avg));
+		return (l_scaled * (1.0f + (l_scaled / (Lwhite * Lwhite)))) / (1.0f + l_scaled);
 	}
 
     Vector3 operator*(const Vector3& color) const

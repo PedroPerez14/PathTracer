@@ -18,24 +18,25 @@ using namespace std;
 */
 int main(int argc, char* argv[])
 {
-    /*if (argc != 5)
+    if (argc != 5)
     {
         cout << "Params: <im_width> <im_height> <paths_per_pixel> <n_threads>" << endl;
         return 1;
-    }*/
-    if(true == false)
-    { }
+    }
     else
     {
         PathTracer* pt;
-        /*int w = std::stoi(argv[1]);
-        int h = std::stoi(argv[2]);
-        int paths_per_pixel = std::stoi(argv[3]);
-        int n_threads = std::stoi(argv[4]);*/
+        
         int w = 1920;
         int h = 1080;
-        int paths_per_pixel = 100;
+        int paths_per_pixel = 20;
         int n_threads = 11;
+
+        w = std::stoi(argv[1]);
+        h = std::stoi(argv[2]);
+        paths_per_pixel = std::stoi(argv[3]);
+        n_threads = std::stoi(argv[4]);
+
         pt = new PathTracer(w, h, paths_per_pixel, n_threads);
         
         ///------------CHOOSE A CORNELL BOX SCENE TO RENDER-------///
@@ -47,11 +48,11 @@ int main(int argc, char* argv[])
         //cornell_box_cuadrado(rt);
         //espacio(rt);
         //  ------------------------------------------------------//
-        //standard_cornell_box(pt);
-        white_cornell_box(pt);
+        //standard_cornell_box(pt);             
+        //white_cornell_box(pt);
         //specular_cornell_box(pt);
         //mario_cornell_box(pt);
-        //doom_cornell_box(pt);
+        doom_cornell_box(pt);
         ///-------------------------------------------------------///
 
         auto start = chrono::system_clock::now();
@@ -72,6 +73,5 @@ int main(int argc, char* argv[])
         cout << "Total elapsed time: " << duration.count() << " ms" << endl;
         cout << "Output can be found at: " + _USER_PATH << endl;
     }
-    //test
 	return 0;
 }

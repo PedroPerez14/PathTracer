@@ -84,13 +84,15 @@ struct Image
             }
         }
         else if (method.compare("reinhard_g_pt") == 0) {
-            float lwhite = XYZtoYxy(RGBtoXYZ(Color{1.0f, 1.0f, 1.0f})).r;
+            float lwhite = RGBtoXYZ(Color{max, max, max}).g;
             cout << "l_max / lwhite: " << (float)l_max / (float)lwhite << endl;
             cout << "L_MAX: " << l_max << endl;
             Color aux;
             for (int i = 0; i < height * width; i++) {
-                aux = XYZtoYxy(RGBtoXYZ(pixels.at(i)));
-                aux.reinhard_global(log_avg_l, (float)min(1.0f, (float)l_max / (float)lwhite) * 0.95f, 0.75f);
+                aux = RGBtoXYZ(pixels.at(i));
+                float Y_ = aux.reinhard_global(log_avg_l, l_max, _REINHARD_a); //(float)min(1.0f, (float)l_max / (float)lwhite) * 0.95f
+                aux = XYZtoYxy(aux);
+                aux.r = Y_ * 100.0f;
                 aux = XYZtoRGB(YxytoXYZ(aux));
                 aux.clamp(1.0f);
                 pixels.at(i) = aux;
@@ -131,15 +133,17 @@ struct Image
                 {
                     max = max_px(p);
                 }
-                px = XYZtoYxy(RGBtoXYZ(p));
-                l = px.r; //La primera componente del pixel es la luminancia
+                px = RGBtoXYZ(p);
+                l = px.g; //La segunda componente del pixel en XYZ es la luminancia
                 if (l > l_max) { l_max = l; }
                 l_acum = l_acum + (float)logf(((float)_REINHARD_DELTA + l));
+                //cout << "l_acum " << n_pixels << ": " << l_acum << endl;
                 n_pixels++;
             }
         }
-        log_avg_l = expf(l_acum / (float)(n_pixels));
+        log_avg_l = expf(l_acum / (float)n_pixels);
         cout << log_avg_l << endl;
+        //cout << expf(l_acum) << " " << (float)pixels.size() << endl;
     }
 
 };

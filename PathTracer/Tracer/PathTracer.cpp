@@ -421,13 +421,9 @@ Color PathTracer::get_point_lights(Vector3 p, std::shared_ptr<Shape> shape, cons
                         {
                             inter = true;
                         }
-                        else
-                        {
-                            p_inter = shape->intersect(p_aux, dir_aux, aux);
-                            inter = aux;
-                        }
                         
-                    //}
+                        
+                   // }
                 }
                 if (!inter)
                 {

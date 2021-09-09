@@ -90,39 +90,41 @@ public:
 	void fresnel(Vector3 w_o, Vector3 n, Color& k_s, Color& k_t, const float& n_env, const bool& ray_through_air) override
 	{
 		w_o.normalize();
+		n = cross(v1, v2);
 		n.normalize();
 		float n1 = n_env;
 		float n2 = mat->n_fresnel;
-		if (dot(w_o * -1.0f, n) > 0.0f)
+		if (dot(w_o * -1.0f, n) < 0.0f)
 		{
 			n = n * -1.0f;
 		}
 		float mu = n1 / n2;
-		float cos_th_entr = dot(w_o * -1.0, n);
-		float sin_th_t_2 = mu * mu * (1 - (cos_th_entr * cos_th_entr));
-		float cos_refrac = sqrtf(1 - sin_th_t_2);
+		float cos_th_entr = dot(w_o * -1.0f, n);
+		float sin_th_t_2 = mu * mu * (1.0f - (cos_th_entr * cos_th_entr));
+		float cos_refrac = sqrtf(1.0f - sin_th_t_2);
 		float p_paral = (n2 * cos_th_entr - n1 * cos_refrac) / (n2 * cos_th_entr + n1 * cos_refrac);
 		float p_perp = (n1 * cos_th_entr - n2 * cos_refrac) / (n1 * cos_th_entr + n2 * cos_refrac);
 		float fr = (p_paral * p_paral + p_perp * p_perp) / 2.0f;
-		float ft = 1 - fr;
+		float ft = 1.0f - fr;
 		k_s = Color{ fr, fr, fr };
 		k_t = Color{ ft, ft, ft };
 	}
 
 	Vector3 refract_ray(Vector3 n, Vector3 w_entr, const float& n_medio, bool& ray_through_air) override
 	{
+		n = cross(v1, v2);
 		n.normalize();
 		w_entr.normalize();
 		float n1 = n_medio;
 		float n2 = mat->n_fresnel;
-		if (dot(w_entr * -1.0f, n) > 0.0f)
+		if (dot(w_entr * -1.0f, n) < 0.0f)
 		{
 			n = n * -1.0f;
 		}
 		float mu = n1 / n2;
 		float cos_th_entr = dot(w_entr * -1.0f, n);
 		float sin_th_t_2 = mu * mu * (1 - (cos_th_entr * cos_th_entr));
-		return (w_entr * mu + n * (mu * cos_th_entr - sqrtf(1 - sin_th_t_2)));
+		return w_entr * mu + n * (mu * cos_th_entr - sqrtf(1 - sin_th_t_2));
 	}
 
 };
